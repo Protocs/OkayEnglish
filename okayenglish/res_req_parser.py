@@ -1,9 +1,7 @@
 TYPICAL_RESPONSE = {
-    'session': None,
-    'version': None,
-    'response': {
-        'end_session': False
-    }
+    "session": None,
+    "version": None,
+    "response": {"end_session": False},
 }
 
 

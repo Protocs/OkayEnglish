@@ -14,4 +14,5 @@ class TrainingStats(db.Model):
     right_answers = db.Column(db.Integer, nullable=False)
     wrong_answers = db.Column(db.Integer, nullable=False)
 
+
 db.create_all()
