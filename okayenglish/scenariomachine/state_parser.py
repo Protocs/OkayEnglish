@@ -5,6 +5,7 @@ import yaml
 from okayenglish.scenariomachine.states import *
 # noinspection PyUnresolvedReferences
 from okayenglish.scenariomachine.choice import Choice
+from okayenglish.config import SCENARIO_FILE
 
 __all__ = ["parse_file", "find_state_by_name"]
 
@@ -34,3 +35,6 @@ def check_start_state_exists():
         find_state_by_name("START")
     except StopIteration:
         raise ScenarioParsingError("состояние START не найдено.")
+
+
+load_states_from_file(SCENARIO_FILE)

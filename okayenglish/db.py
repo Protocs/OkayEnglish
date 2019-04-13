@@ -3,8 +3,7 @@ from datetime import datetime
 
 
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.String(64), nullable=False, unique=True)
+    user_id = db.Column(db.String(64), nullable=False, unique=True, primary_key=True)
 
 
 class TrainingStats(db.Model):
