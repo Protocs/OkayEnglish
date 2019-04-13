@@ -15,5 +15,5 @@ class Bot:
         response = ResponseParser(req)
 
         # Простой эхо-бот.
-        response.set_reply_text(req.get_text())
+        response.reply_text = req.text
         return json.dumps(response)

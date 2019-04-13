@@ -9,14 +9,17 @@ class RequestParser(dict):
     def __init__(self, request_json):
         super().__init__(request_json)
 
-    def get_session(self):
+    @property
+    def session(self):
         return self.get("session")
 
-    def get_version(self):
+    @property
+    def version(self):
         return self.get("version")
 
-    def get_text(self):
-        return self.get("request").get("original_utterance")
+    @property
+    def text(self):
+        return self["request"].get("original_utterance")
 
 
 class ResponseParser(dict):
@@ -28,5 +31,10 @@ class ResponseParser(dict):
             else:
                 self[k] = v
 
-    def set_reply_text(self, text):
-        self["response"]["text"] = text
+    @property
+    def reply_text(self):
+        return self["response"]["text"]
+
+    @reply_text.setter
+    def reply_text(self, new_text):
+        self["response"]["text"] = new_text
