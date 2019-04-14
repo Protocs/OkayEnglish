@@ -90,7 +90,7 @@ class FinalState(AbstractState):
 
 InputState(
     name="START",
-    text=TEXTS["START"],
+    text="",
     next="TRAINING_CHOICE"
 )
 
@@ -101,7 +101,7 @@ ChoiceState(
         Choice(
             hint="Перевод слов",
             match="слова",
-            next="word_translating_state"
+            next=generate_word_translating_state
         ),
         Choice(
             hint="Перевод предложений",

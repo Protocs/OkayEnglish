@@ -21,8 +21,7 @@ class Session:
         else:
             self._user_text = req_parser.text
 
-    def respond(self, resp_parser):
-        """Возвращает текст для сообщения."""
+    def send(self, resp_parser):
         if self._text_prepend is not None:
             random_prepend = random.choice(self._text_prepend) + "\n"
         else:
@@ -32,9 +31,12 @@ class Session:
         resp_parser.reply_text = random_prepend + self._current_state.get_text(
             self._storage
         )
+
+    def next_state(self, resp_parser):
+        """Переключает текущее состояние на новое"""
+        self._advance_state(self._user_text)
         if isinstance(self._current_state, FinalState):
             resp_parser.end_session = True
-        self._advance_state(self._user_text)
 
     # TODO: Обработать FinalState
     def _advance_state(self, inp):

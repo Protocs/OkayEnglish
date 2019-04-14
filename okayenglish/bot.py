@@ -27,6 +27,7 @@ class Bot:
 
         session = self._sessions[user_id]
         session.receive(req)
-        session.respond(response)
+        session.next_state(response)
+        session.send(response)
 
         return json.dumps(response)
