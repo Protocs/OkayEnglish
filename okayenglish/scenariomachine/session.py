@@ -1,7 +1,9 @@
 import random
+import logging
 
 from okayenglish.scenariomachine.session_storage import SessionStorage
 from okayenglish.scenariomachine.state_parser import find_state_by_name
+from okayenglish.scenariomachine.states import FinalState
 
 
 class Session:
@@ -27,6 +29,7 @@ class Session:
         else:
             random_prepend = ""
         self._text_prepend = None
+        logging.info(dir(self._current_state))
         resp_parser.reply_text = random_prepend + self._current_state.get_text(
             self._storage
         )
@@ -35,3 +38,5 @@ class Session:
     # TODO: Обработать FinalState
     def _advance_state(self, inp):
         self._current_state = self._current_state.next_state(self._storage, inp)
+        if isinstance(self._current_state, FinalState):
+

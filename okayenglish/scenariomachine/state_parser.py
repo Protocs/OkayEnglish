@@ -9,6 +9,7 @@ from okayenglish.config import SCENARIO_FILE
 
 __all__ = ["parse_file", "find_state_by_name"]
 
+scenario_file = open(SCENARIO_FILE, encoding="utf-8")
 states = []
 
 
@@ -17,24 +18,14 @@ class ScenarioParsingError(Exception):
 
 
 def find_state_by_name(name):
-    return next(s for s in states if s.name == name)
+    try:
+        return next(s for s in states if s.name == name)
+    except StopIteration:
+        raise ValueError(f"состояние {name!r} не найдено")
 
 
 def parse_file(fp):
-    states.extend(load_states_from_file(fp))
-    check_start_state_exists()
+    states.extend(yaml.load_all(scenario_file))
 
 
-def load_states_from_file(fp):
-    with open(fp, encoding="utf-8") as f:
-        return yaml.load_all(f)
-
-
-def check_start_state_exists():
-    try:
-        find_state_by_name("START")
-    except StopIteration:
-        raise ScenarioParsingError("состояние START не найдено.")
-
-
-load_states_from_file(SCENARIO_FILE)
+parse_file(SCENARIO_FILE)

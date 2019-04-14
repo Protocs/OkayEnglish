@@ -1,7 +1,6 @@
 from flask import Flask
 import json
 
-from okayenglish.db import User
 from okayenglish.res_req_parser import RequestParser, ResponseParser
 from okayenglish.scenariomachine.session import Session
 
@@ -14,6 +13,8 @@ class Bot:
         self._sessions = {}
 
     def handle_request(self, req_json):
+        from okayenglish.db import User
+
         req = RequestParser(req_json)
         response = ResponseParser(req)
 

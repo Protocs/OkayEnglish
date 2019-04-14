@@ -1,8 +1,28 @@
-from abc import ABC, abstractmethod
 import re
 import random
+import logging
 
-from yaml import YAMLObject
+from yaml import YAMLObject, add_constructor
+
+logging.basicConfig(level=logging.DEBUG)
+
+
+def _indent(func_code):
+    """Добавляет отступы в тело функции.
+
+    >>> func = '''def func():
+    ... if True:
+    ...     return True
+    ... '''
+    >>> print(_indent(func))
+    def func():
+        if True:
+            return True
+    """
+    lines = func_code.split("\n")
+    for i in range(1, len(lines)):
+        lines[i] = "    " + lines[i]
+    return "\n".join(lines)
 
 
 def _create_dynamic_text_function(text):
@@ -13,18 +33,22 @@ def _create_dynamic_text_function(text):
         - text - одно сообщение: возвращает функцию, возвращающую это сообщение.
         - text - список из нескольких сообщений: возвращает функцию,
           возвращающую случайное сообщение из этого списка.
-        - text - тело функции Python, начинающееся с ``!code``:
+        - text - тело функции Python, начинающееся с ``code``:
           создает функцию с указанным телом, которая должна принять аргумент
           ``storage`` (хранилище сессии) и вернуть текст сообщения.
     """
 
     if isinstance(text, str):
         # Одна строка
-        if "!code" not in text:
+        if "code" not in text:
             return lambda _: text
         else:  # Пользовательская функция
-            func = text.replace("  !code", "def text_func(storage):")
-            return eval(func)
+            func = text.replace("code", "def text_func(storage):")
+            func = _indent(func)
+            logging.error(repr(func))
+            exec(func)
+            logging.error(locals())
+            return locals()["text_func"]
     # Несколько строк в списке
     if isinstance(text, list):
         return lambda _: random.choice(text)
@@ -36,18 +60,22 @@ def create_dynamic_next_state_function(text):
     Варианты:
 
         - next - название состояния: возвращает функцию, возвращающую это название.
-        - next - тело функции Python, начинающееся с ``!code``:
+        - next - тело функции Python, начинающееся с ``code``:
           создает функцию с указанным телом, которая должна принять аргументы
           ``storage`` (хранилище сессии) и ``inp`` (текст ответа пользователя)
           и вернуть название следующего состояния.
     """
 
     # Одна строка
-    if "!code" not in text:
+    if "code" not in text:
         return lambda _, __: text
     else:  # Пользовательская функция
-        func = text.replace("  !code", "def next_func(storage, inp):")
-        return eval(func)
+        func = text.replace("code", "def next_func(inp, storage):")
+        func = _indent(func)
+        logging.error(repr(func))
+        exec(func)
+        logging.error(locals())
+        return locals()["next_func"]
 
 
 def get_text_and_tts(text_and_tts):
@@ -65,8 +93,9 @@ def get_text_and_tts(text_and_tts):
     return just_text, tts
 
 
-class AbstractState(ABC, YAMLObject):
+class AbstractState:
     def __init__(self, name, text):
+        logging.info("AbstractState constructor")
         self.name = name
         self.get_text = _create_dynamic_text_function(text)
 
@@ -81,7 +110,6 @@ class AbstractState(ABC, YAMLObject):
 
         return find_state_by_name(self.get_next_state_name(storage, inp))
 
-    @abstractmethod
     def get_next_state_name(self, storage, inp):
         pass
 
@@ -94,10 +122,9 @@ tts_pattern = re.compile(r"&\((.*)\)")
 
 
 class ChoiceState(AbstractState):
-    yaml_tag = "!Choices"
-
     def __init__(self, name, text, choices):
         super().__init__(name, text)
+        logging.info("ChoiceState constructor")
         self.choices = choices
 
     def get_next_state_name(self, storage, inp):
@@ -112,8 +139,6 @@ class ChoiceState(AbstractState):
 
 
 class InputState(AbstractState):
-    yaml_tag = "!Input"
-
     def __init__(self, name, text, next):
         super().__init__(name, text)
         self.next = create_dynamic_next_state_function(next)
@@ -123,7 +148,25 @@ class InputState(AbstractState):
 
 
 class FinalState(AbstractState):
-    yaml_tag = "!Exit"
-
     def get_next_state_name(self, storage, inp):
         return None
+
+
+def choices_constructor(loader, node):
+    value = loader.construct_mapping(node)
+    return ChoiceState(value["name"], value["text"], value["choices"])
+
+
+def input_constructor(loader, node):
+    value = loader.construct_mapping(node)
+    return InputState(value["name"], value["text"], value["next"])
+
+
+def final_constructor(loader, node):
+    value = loader.construct_mapping(node)
+    return FinalState(value["name"], value["text"])
+
+
+add_constructor("!Choices", choices_constructor)
+add_constructor("!Input", input_constructor)
+add_constructor("!Exit", final_constructor)
