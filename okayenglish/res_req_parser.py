@@ -38,3 +38,11 @@ class ResponseParser(dict):
     @reply_text.setter
     def reply_text(self, new_text):
         self["response"]["text"] = new_text
+
+    @property
+    def end_session(self):
+        return self["response"]["end_session"]
+
+    @end_session.setter
+    def end_session(self, end):
+        self["response"]["end_session"] = end

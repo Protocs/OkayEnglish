@@ -1,81 +1,13 @@
 import re
 import random
 import logging
+from abc import ABC, abstractmethod
 
 from yaml import YAMLObject, add_constructor
 
+__all__ = ["ChoiceState", "InputState", "FinalState"]
+
 logging.basicConfig(level=logging.DEBUG)
-
-
-def _indent(func_code):
-    """Добавляет отступы в тело функции.
-
-    >>> func = '''def func():
-    ... if True:
-    ...     return True
-    ... '''
-    >>> print(_indent(func))
-    def func():
-        if True:
-            return True
-    """
-    lines = func_code.split("\n")
-    for i in range(1, len(lines)):
-        lines[i] = "    " + lines[i]
-    return "\n".join(lines)
-
-
-def _create_dynamic_text_function(text):
-    """Создает функцию, возвращающую текст сообщения.
-
-    Варианты:
-
-        - text - одно сообщение: возвращает функцию, возвращающую это сообщение.
-        - text - список из нескольких сообщений: возвращает функцию,
-          возвращающую случайное сообщение из этого списка.
-        - text - тело функции Python, начинающееся с ``code``:
-          создает функцию с указанным телом, которая должна принять аргумент
-          ``storage`` (хранилище сессии) и вернуть текст сообщения.
-    """
-
-    if isinstance(text, str):
-        # Одна строка
-        if "code" not in text:
-            return lambda _: text
-        else:  # Пользовательская функция
-            func = text.replace("code", "def text_func(storage):")
-            func = _indent(func)
-            logging.error(repr(func))
-            exec(func)
-            logging.error(locals())
-            return locals()["text_func"]
-    # Несколько строк в списке
-    if isinstance(text, list):
-        return lambda _: random.choice(text)
-
-
-def create_dynamic_next_state_function(text):
-    """Создает функцию, возвращающую название следующего состояния.
-
-    Варианты:
-
-        - next - название состояния: возвращает функцию, возвращающую это название.
-        - next - тело функции Python, начинающееся с ``code``:
-          создает функцию с указанным телом, которая должна принять аргументы
-          ``storage`` (хранилище сессии) и ``inp`` (текст ответа пользователя)
-          и вернуть название следующего состояния.
-    """
-
-    # Одна строка
-    if "code" not in text:
-        return lambda _, __: text
-    else:  # Пользовательская функция
-        func = text.replace("code", "def next_func(inp, storage):")
-        func = _indent(func)
-        logging.error(repr(func))
-        exec(func)
-        logging.error(locals())
-        return locals()["next_func"]
 
 
 def get_text_and_tts(text_and_tts):
@@ -93,24 +25,20 @@ def get_text_and_tts(text_and_tts):
     return just_text, tts
 
 
-class AbstractState:
+class AbstractState(ABC):
     def __init__(self, name, text):
-        logging.info("AbstractState constructor")
+        self.text = text
         self.name = name
-        self.get_text = _create_dynamic_text_function(text)
+        state_objects[name] = self
 
-    def next_state(self, storage, inp):
-        """Возвращает следующее состояние, определяемое :func:`get_next_state_name`.
+    def get_text(self, storage):
+        if isinstance(self.text, str):
+            return self.text
+        if callable(self.text):
+            return self.text(storage)
 
-        :param SessionStorage storage: хранилище данных этой сессии.
-        :param str inp: ответ пользователя на сообщение этого состояния.
-        :rtype: AbstractState
-        """
-        from okayenglish.scenariomachine.state_parser import find_state_by_name
-
-        return find_state_by_name(self.get_next_state_name(storage, inp))
-
-    def get_next_state_name(self, storage, inp):
+    @abstractmethod
+    def get_next_state(self, storage, inp):
         pass
 
 
@@ -120,17 +48,21 @@ class AbstractState:
 # Здравствуйте! Это мы, хороводоведы. &(Здравствуйте! Это мы, хоров+одо в+еды.)
 tts_pattern = re.compile(r"&\((.*)\)")
 
+state_objects = {}
+
 
 class ChoiceState(AbstractState):
     def __init__(self, name, text, choices):
         super().__init__(name, text)
-        logging.info("ChoiceState constructor")
         self.choices = choices
 
-    def get_next_state_name(self, storage, inp):
+    def get_next_state(self, storage, inp):
         for choice in self.choices:
             if choice.fits_under(inp):
-                return choice.next(storage, inp)
+                if isinstance(choice.next, str):
+                    return state_objects[choice.next]
+                if callable(choice.next):
+                    return state_objects[choice.next(storage, inp)]
         raise ValueError(
             "ни один выбор не подошёл под ответ.\n"
             'Добавьте Choice с "match: .*", '
@@ -141,32 +73,16 @@ class ChoiceState(AbstractState):
 class InputState(AbstractState):
     def __init__(self, name, text, next):
         super().__init__(name, text)
-        self.next = create_dynamic_next_state_function(next)
+        self.text = text
+        self.next = next
 
-    def get_next_state_name(self, storage, inp):
-        return self.next(storage, inp)
+    def get_next_state(self, storage, inp):
+        if isinstance(self.next, str):
+            return state_objects[self.next]
+        if callable(self.next):
+            return state_objects[self.next(storage, inp)]
 
 
 class FinalState(AbstractState):
-    def get_next_state_name(self, storage, inp):
+    def get_next_state(self, storage, inp):
         return None
-
-
-def choices_constructor(loader, node):
-    value = loader.construct_mapping(node)
-    return ChoiceState(value["name"], value["text"], value["choices"])
-
-
-def input_constructor(loader, node):
-    value = loader.construct_mapping(node)
-    return InputState(value["name"], value["text"], value["next"])
-
-
-def final_constructor(loader, node):
-    value = loader.construct_mapping(node)
-    return FinalState(value["name"], value["text"])
-
-
-add_constructor("!Choices", choices_constructor)
-add_constructor("!Input", input_constructor)
-add_constructor("!Exit", final_constructor)
