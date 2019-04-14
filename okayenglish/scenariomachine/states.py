@@ -1,9 +1,9 @@
 import re
-import random
 import logging
 from abc import ABC, abstractmethod
 
-from yaml import YAMLObject, add_constructor
+from . import TEXTS
+from .choice import Choice
 
 __all__ = ["ChoiceState", "InputState", "FinalState"]
 
@@ -86,3 +86,52 @@ class InputState(AbstractState):
 class FinalState(AbstractState):
     def get_next_state(self, storage, inp):
         return None
+
+
+InputState(
+    name="START",
+    text=TEXTS["START"],
+    next="TRAINING_CHOICE"
+)
+
+ChoiceState(
+    name="TRAINING_CHOICE",
+    text=TEXTS["TRAINING_CHOICE"],
+    choices=[
+        Choice(
+            hint="Перевод слов",
+            match="слова",
+            next="word_translating_state"
+        ),
+        Choice(
+            hint="Перевод предложений",
+            match="предложения",
+            next="sentences_translating_state"
+        ),
+        Choice(
+            hint="Чтение текста",
+            match="текст",
+            next="text_reading_state"
+        )
+    ],
+)
+
+# Временные состояния тренировок
+# TODO: Генерация состояния для текущей тренировки
+InputState(
+    name="word_translating_state",
+    text="Тут будет перевод слов",
+    next="START"
+)
+
+InputState(
+    name="sentences_translating_state",
+    text="Тут будет перевод предложений",
+    next="START"
+)
+
+InputState(
+    name="text_reading_state",
+    text="Тут будет чтение текста",
+    next="START"
+)
