@@ -64,7 +64,7 @@ class ChoiceState(AbstractState):
                 if callable(choice.next):
                     return state_objects[choice.next(storage, inp)]
         raise ValueError(
-            "ни один выбор не подошёл под ответ.\n"
+            f"ни один выбор не подошёл под ответ {inp!r}.\n"
             'Добавьте Choice с "match: .*", '
             'чтобы задать выбор "Не поняла".'
         )

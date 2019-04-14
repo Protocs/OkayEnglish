@@ -38,4 +38,4 @@ class Session:
 
     # TODO: Обработать FinalState
     def _advance_state(self, inp):
-        self._current_state = self._current_state.next_state(self._storage, inp)
+        self._current_state = self._current_state.get_next_state(self._storage, inp)

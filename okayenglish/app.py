@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from .config import *
 
 from okayenglish.bot import Bot
+from okayenglish.states import *
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI

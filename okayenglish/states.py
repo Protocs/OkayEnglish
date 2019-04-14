@@ -1,7 +1,13 @@
 from okayenglish.scenariomachine import *
 
-ChoiceState(
+InputState(
     name="START",
+    text="Дароу",
+    next="s",
+)
+
+ChoiceState(
+    name="s",
     text="Хайооойо",
     choices=[
         Choice(
