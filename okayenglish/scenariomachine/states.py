@@ -2,8 +2,10 @@ import re
 import logging
 from abc import ABC, abstractmethod
 
+from okayenglish.scenariomachine.training_manager import WordTranslationTrainingManager
 from . import TEXTS
 from .choice import Choice
+from .utils import LANGUAGES
 
 __all__ = ["ChoiceState", "InputState", "FinalState"]
 
@@ -88,15 +90,45 @@ class FinalState(AbstractState):
         return None
 
 
+def generate_word_translating_state(storage, inp):
+    text = ""
+    if storage.get("training") is None:
+        training = WordTranslationTrainingManager(counter_max=5)
+        storage["training"] = training
+        training.change_current_word()
+    else:
+        training = storage.get("training")
+        text += training.check_right_answer(inp)
+
+    if not training.training_continues:
+        text += "Тренировка окончена."
+        storage["training"] = None
+        training_choice_state("word_translating_state",
+                              text + "\nВыберите новую тренировку")
+    else:
+        next_state = generate_word_translating_state
+        text += f"Переведите слово \"{training.word.word}\" " \
+            f"на {LANGUAGES[training.right_answer.language]}\n"
+        text += f"Подсказка: {training._right_answer.word}"
+
+        InputState(
+            name="word_translating_state",
+            text=text,
+            next=next_state
+        )
+
+    return "word_translating_state"
+
+
 InputState(
     name="START",
     text="",
     next="TRAINING_CHOICE"
 )
 
-ChoiceState(
-    name="TRAINING_CHOICE",
-    text=TEXTS["TRAINING_CHOICE"],
+training_choice_state = lambda name, text: ChoiceState(
+    name=name,
+    text=text,
     choices=[
         Choice(
             hint="Перевод слов",
@@ -116,22 +148,4 @@ ChoiceState(
     ],
 )
 
-# Временные состояния тренировок
-# TODO: Генерация состояния для текущей тренировки
-InputState(
-    name="word_translating_state",
-    text="Тут будет перевод слов",
-    next="START"
-)
-
-InputState(
-    name="sentences_translating_state",
-    text="Тут будет перевод предложений",
-    next="START"
-)
-
-InputState(
-    name="text_reading_state",
-    text="Тут будет чтение текста",
-    next="START"
-)
+training_choice_state("TRAINING_CHOICE", TEXTS["TRAINING_CHOICE"])
