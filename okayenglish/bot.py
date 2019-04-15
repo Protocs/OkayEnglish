@@ -20,7 +20,7 @@ class Bot:
 
         # Создание сессии для нового пользователя
         user_id = req.session["user_id"]
-        if user_id not in self._sessions:
+        if user_id not in self._sessions or req.new_session:
             self._sessions[user_id] = Session(
                 User.query.filter_by(user_id=user_id).first()
             )

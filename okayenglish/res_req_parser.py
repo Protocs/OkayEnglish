@@ -21,6 +21,10 @@ class RequestParser(dict):
     def text(self):
         return self["request"].get("original_utterance")
 
+    @property
+    def new_session(self):
+        return self.session["new"]
+
 
 class ResponseParser(dict):
     def __init__(self, request: RequestParser):
