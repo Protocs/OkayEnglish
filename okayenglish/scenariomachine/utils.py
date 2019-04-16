@@ -26,7 +26,10 @@ def get_word_translate(word, _from, to):
         "lang": "-".join([_from, to])
     }
     response = requests.get(DICTIONARY_API_SERVER, params).content
-    return json.loads(response)["def"][0]["tr"][0]["text"]
+    try:
+        return json.loads(response)["def"][0]["tr"][0]["text"]
+    except IndexError:
+        return False
 
 
 def hide_word_letters(word):

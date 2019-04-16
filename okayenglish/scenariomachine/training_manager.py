@@ -38,6 +38,8 @@ class WordTranslationTrainingManager:
 
         random_english_word = get_random_word()
         translate = get_word_translate(random_english_word, _from="en", to="ru")
+        while not translate:
+            translate = get_word_translate(random_english_word, _from="en", to="ru")
         if current_language == "ru":
             self._current_word = word(translate, "ru")
             self._right_answer = word(random_english_word, "en")
