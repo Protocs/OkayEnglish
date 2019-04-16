@@ -2,17 +2,17 @@ from okayenglish.scenariomachine.utils import *
 
 
 class WordTranslationTrainingManager:
+    PHRASES = {
+        "right_answer": "Это правильный ответ.\n",
+        "wrong_answer": "Это неправильный ответ.\n"
+    }
+
     def __init__(self, counter_max):
         self._current_word = None
         self._right_answer = None
 
         self._counter_max = counter_max
         self._count = 0
-
-        self.phrases = {
-            "right_answer": "Это правильный ответ.\n",
-            "wrong_answer": "Это неправильный ответ.\n"
-        }
 
     @property
     def training_continues(self):
@@ -30,8 +30,8 @@ class WordTranslationTrainingManager:
         if inp == self._right_answer.word:
             self.change_current_word()
             self._count += 1
-            return self.phrases["right_answer"]
-        return self.phrases["wrong_answer"]
+            return self.PHRASES["right_answer"]
+        return self.PHRASES["wrong_answer"]
 
     def change_current_word(self):
         current_language = random.choice(["ru", "en"])

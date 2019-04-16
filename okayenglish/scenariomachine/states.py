@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 from okayenglish.scenariomachine.training_manager import WordTranslationTrainingManager
 from . import TEXTS
 from .choice import Choice
-from .utils import LANGUAGES
+from .utils import LANGUAGES, hide_word_letters
 
 __all__ = ["ChoiceState", "InputState", "FinalState"]
 
@@ -92,29 +92,36 @@ class FinalState(AbstractState):
 
 def generate_word_translating_state(storage, inp):
     text = ""
-    if storage.get("training") is None:
+
+    # Если тренировка еще не была запущена, то создаем менеджер тренировки
+    # для текущего пользователя
+    training = storage.get("training")
+    if training is None:
         training = WordTranslationTrainingManager(counter_max=5)
         storage["training"] = training
+        # Создаем первое слово
         training.change_current_word()
     else:
-        training = storage.get("training")
         text += training.check_right_answer(inp)
 
+    # Если количество отработанных слов равняется ``counter_max``, значит тренировка
+    # окончена
     if not training.training_continues:
         text += "Тренировка окончена."
         storage["training"] = None
+        # Состояние после последнего отработанного слова - состояние выбора тренировки
         training_choice_state("word_translating_state",
                               text + "\nВыберите новую тренировку")
     else:
-        next_state = generate_word_translating_state
+        word_with_hide_letters = hide_word_letters(training.right_answer.word)
         text += f"Переведите слово \"{training.word.word}\" " \
             f"на {LANGUAGES[training.right_answer.language]}\n"
-        text += f"Подсказка: {training._right_answer.word}"
+        text += f"Подсказка: {word_with_hide_letters}"
 
         InputState(
             name="word_translating_state",
             text=text,
-            next=next_state
+            next=generate_word_translating_state
         )
 
     return "word_translating_state"
