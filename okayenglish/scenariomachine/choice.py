@@ -18,4 +18,4 @@ class Choice:
         если ``response`` подходит под этот вариант,
         иначе ``False``.
         """
-        return re.match(self.match, response) is not None
+        return bool(re.findall(self.match, response))
