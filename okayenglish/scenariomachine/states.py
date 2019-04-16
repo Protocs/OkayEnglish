@@ -133,26 +133,30 @@ InputState(
     next="TRAINING_CHOICE"
 )
 
-training_choice_state = lambda name, text: ChoiceState(
-    name=name,
-    text=text,
-    choices=[
-        Choice(
-            hint="Перевод слов",
-            match="слова",
-            next=generate_word_translating_state
-        ),
-        Choice(
-            hint="Перевод предложений",
-            match="предложения",
-            next="sentences_translating_state"
-        ),
-        Choice(
-            hint="Чтение текста",
-            match="текст",
-            next="text_reading_state"
-        )
-    ],
-)
+
+def training_choice_state(name, text):
+    ChoiceState(
+        name=name,
+        text=text,
+        choices=[
+            Choice(
+                hint="Перевод слов",
+                match="1|слов",
+                next=generate_word_translating_state
+            ),
+            Choice(
+                hint="Перевод предложений",
+                match="2|предложени",
+                next="sentences_translating_state"
+            ),
+            Choice(
+                hint="Чтение текста",
+                match="3|текст",
+                next="text_reading_state"
+            )
+        ],
+    )
+
 
 training_choice_state("TRAINING_CHOICE", TEXTS["TRAINING_CHOICE"])
+
