@@ -3,9 +3,9 @@ import random
 from collections import namedtuple
 import requests
 
-from ..local_settings import TRANSLATOR_API_KEY
+from ..local_settings import DICTIONARY_API_KEY
 
-TRANSLATOR_API_SERVER = "https://translate.yandex.net/api/v1.5/tr.json/translate"
+DICTIONARY_API_SERVER = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup"
 
 LANGUAGES = {
     "ru": "русский язык",
@@ -21,12 +21,12 @@ def get_random_word():
 
 def get_word_translate(word, _from, to):
     params = {
-        "key": TRANSLATOR_API_KEY,
+        "key": DICTIONARY_API_KEY,
         "text": word,
         "lang": "-".join([_from, to])
     }
-    response = requests.get(TRANSLATOR_API_SERVER, params).content
-    return json.loads(response)["text"][0]
+    response = requests.get(DICTIONARY_API_SERVER, params).content
+    return json.loads(response)["def"][0]["tr"][0]["text"]
 
 
 def hide_word_letters(word):
