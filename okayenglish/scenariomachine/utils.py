@@ -33,7 +33,7 @@ def hide_word_letters(word):
     letters = list(word)
     for _ in range(len(word) // 2 + 1):
         random_index = random.randint(0, len(word) - 1)
-        while not letters[random_index]:
+        while not letters[random_index] or letters[random_index] == " ":
             random_index = random.randint(0, len(word) - 1)
         letters[random_index] = None
     return " ".join(map(lambda l: "_" if not l else l, letters))
