@@ -116,7 +116,7 @@ def generate_word_translating_state(storage, inp):
         word_with_hide_letters = hide_word_letters(training.right_answer.word)
         text += f"Переведите слово \"{training.word.word}\" " \
             f"на {LANGUAGES[training.right_answer.language]}\n"
-        text += f"Подсказка: {word_with_hide_letters}"
+        text += f"Подсказка: {word_with_hide_letters}\n"
 
         InputState(
             name="word_translating_state",
@@ -159,4 +159,3 @@ def training_choice_state(name, text):
 
 
 training_choice_state("TRAINING_CHOICE", TEXTS["TRAINING_CHOICE"])
-
