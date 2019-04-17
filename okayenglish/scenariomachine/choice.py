@@ -18,4 +18,4 @@ class Choice:
         если ``response`` подходит под этот вариант,
         иначе ``False``.
         """
-        return bool(re.findall(self.match, response))
+        return bool(re.findall(self.match, response, re.IGNORECASE))
