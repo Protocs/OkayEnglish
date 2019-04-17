@@ -14,7 +14,7 @@ LANGUAGES = {
 
 
 def get_random_word():
-    with open("okayenglish/static/english_words.txt", encoding="utf-8") as file:
+    with open("okayenglish/static/russian_words.txt", encoding="utf-8") as file:
         words = file.readlines()
         return random.choice(words).strip()
 

@@ -36,13 +36,14 @@ class WordTranslationTrainingManager:
     def change_current_word(self):
         current_language = random.choice(["ru", "en"])
 
-        random_english_word = get_random_word()
-        translate = get_word_translate(random_english_word, _from="en", to="ru")
+        random_word = get_random_word()
+        translate = get_word_translate(random_word, _from="ru", to="en")
         while not translate:
-            translate = get_word_translate(random_english_word, _from="en", to="ru")
+            random_word = get_random_word()
+            translate = get_word_translate(random_word, _from="ru", to="en")
         if current_language == "ru":
             self._current_word = word(translate, "ru")
-            self._right_answer = word(random_english_word, "en")
+            self._right_answer = word(random_word, "en")
             return
-        self._current_word = word(random_english_word, "en")
+        self._current_word = word(random_word, "en")
         self._right_answer = word(translate, "ru")
