@@ -24,6 +24,10 @@ class RequestParser(dict):
     @property
     def new_session(self):
         return self.session["new"]
+    
+    @property
+    def user_id(self):
+        return self.session["user_id"]
 
 
 class ResponseParser(dict):
