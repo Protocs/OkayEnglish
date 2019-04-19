@@ -2,7 +2,7 @@ from flask import Flask
 import json
 
 from okayenglish.res_req_parser import RequestParser, ResponseParser
-from okayenglish.scenariomachine.session import Session
+from okayenglish.session import Session
 
 
 class Bot:
@@ -29,8 +29,6 @@ class Bot:
             self._sessions[user_id] = Session(user)
 
         session = self._sessions[user_id]
-        session.receive(req)
-        session.next_state(response)
-        session.send(response)
+        session.handle_state(response)
 
         return json.dumps(response)

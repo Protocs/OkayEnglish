@@ -1,12 +1,13 @@
 import random
 
-from okayenglish.scenariomachine.utils import get_word_translate, word, get_random_word
+from okayenglish.utils import get_word_translate, word, get_random_word
 
 
 class WordTranslationTrainingManager:
     PHRASES = {
         "right_answer": "Это правильный ответ.\n",
-        "wrong_answer": "Это неправильный ответ.\nЕсли не знаете перевода, просто скажите «не знаю».\n",
+        "wrong_answer": "Это неправильный ответ.\n"
+                        "Если не знаете перевода, просто скажите «не знаю».\n",
         "idk_answer": "Ничего страшного.\nПравильный ответ - {}\n"
     }
 
@@ -16,6 +17,8 @@ class WordTranslationTrainingManager:
 
         self._counter_max = counter_max
         self._count = 0
+
+        self.change_current_word()
 
     @property
     def training_continues(self):
