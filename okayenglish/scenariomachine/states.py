@@ -2,7 +2,7 @@ import re
 import logging
 from abc import ABC, abstractmethod
 
-from okayenglish.scenariomachine.training_manager import WordTranslationTrainingManager
+from .training_manager import WordTranslationTrainingManager
 from . import TEXTS
 from .choice import Choice
 from .utils import LANGUAGES, hide_word_letters
@@ -147,7 +147,7 @@ def training_choice_state(name, text):
             Choice(
                 hint="Перевод предложений",
                 match="2|предложени",
-                next="sentences_translating_state"
+                next="sentence_translating_state"
             ),
             Choice(
                 hint="Чтение текста",

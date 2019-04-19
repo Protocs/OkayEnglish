@@ -1,4 +1,6 @@
-from okayenglish.scenariomachine.utils import *
+import random
+
+from okayenglish.scenariomachine.utils import get_word_translate, word, get_random_word
 
 
 class WordTranslationTrainingManager:

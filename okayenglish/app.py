@@ -1,7 +1,7 @@
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 
-from .config import *
+from okayenglish.config import DATABASE_URI, TRACK_MODIFICATIONS
 
 from okayenglish.bot import Bot
 

@@ -3,7 +3,7 @@ import random
 from collections import namedtuple
 import requests
 
-from ..local_settings import DICTIONARY_API_KEY
+from okayenglish.local_settings import DICTIONARY_API_KEY
 
 DICTIONARY_API_SERVER = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup"
 
