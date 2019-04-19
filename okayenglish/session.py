@@ -51,7 +51,8 @@ class Session:
                 text += f"Переведите слово \"{training.word.word}\" " \
                     f"на {LANGUAGES[training.right_answer.language]}\n"
                 text += f"Подсказка: {word_with_hidden_letters}\n"
-                resp_parser.reply_text = text
+
+            resp_parser.reply_text = text
 
         elif self._current_state == SENTENCE_TRAINING:
             ...
