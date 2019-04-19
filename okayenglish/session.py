@@ -3,7 +3,7 @@ import re
 from okayenglish.states import *
 from okayenglish.texts import GREETING as GREETING_TEXT
 from okayenglish.training_manager import WordTranslationTrainingManager
-from okayenglish.utils import hide_word_letters, LANGUAGES
+from okayenglish.utils import hide_word_letters, LANGUAGE_NAMES
 
 
 class Session:
@@ -39,10 +39,10 @@ class Session:
 
     def begin_word_training(self, resp_parser):
         self._current_state = WORD_TRAINING
-        training = self._training_manager = WordTranslationTrainingManager(5)
-        word_with_hidden_letters = hide_word_letters(training.right_answer.word)
+        training = self._training_manager = WordTranslationTrainingManager()
+        word_with_hidden_letters = hide_word_letters(training.answer.word)
         text = f"Переведите слово \"{training.word.word}\" " \
-            f"на {LANGUAGES[training.right_answer.language]}\n"
+            f"на {LANGUAGE_NAMES[training.answer.language]}\n"
         text += f"Подсказка: {word_with_hidden_letters}\n"
         resp_parser.reply_text = text
 
@@ -51,7 +51,7 @@ class Session:
         text = training.check_right_answer(req_parser.text)
         # Если количество отработанных слов равняется ``counter_max``,
         # значит тренировка окончена
-        if not training.training_continues:
+        if not training.should_continue_training:
             text += "Тренировка окончена."
             self._training_manager = None
             # Состояние после
@@ -59,8 +59,10 @@ class Session:
             self._current_state = TRAINING_SELECT
             text += "\nВыбирайте новую тренировку"
         else:
-            word_with_hidden_letters = hide_word_letters(training.right_answer.word)
-            text += f"Переведите слово \"{training.word.word}\" " \
-                f"на {LANGUAGES[training.right_answer.language]}\n"
+            word_with_hidden_letters = hide_word_letters(training.answer.word)
+            text += (
+                f'Переведите слово "{training.word.word}" '
+                f"на {LANGUAGE_NAMES[training.answer.language]}\n"
+            )
             text += f"Подсказка: {word_with_hidden_letters}\n"
         resp_parser.reply_text = text

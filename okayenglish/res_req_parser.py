@@ -24,7 +24,7 @@ class RequestParser(dict):
     @property
     def new_session(self):
         return self.session["new"]
-    
+
     @property
     def user_id(self):
         return self.session["user_id"]
@@ -33,6 +33,9 @@ class RequestParser(dict):
 class ResponseParser(dict):
     def __init__(self, request: RequestParser):
         super().__init__()
+        self._construct_response_params(request)
+
+    def _construct_response_params(self, request):
         for k, v in TYPICAL_RESPONSE.items():
             if k in ("session", "version"):
                 self[k] = request.get(k)

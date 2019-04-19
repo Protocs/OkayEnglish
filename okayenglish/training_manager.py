@@ -1,6 +1,8 @@
 import random
 
-from okayenglish.utils import get_word_translate, word, get_random_word
+from okayenglish.utils import translate_word, Word, get_random_word
+
+WORDS_PER_TRAINING = 5
 
 
 class WordTranslationTrainingManager:
@@ -11,49 +13,38 @@ class WordTranslationTrainingManager:
         "idk_answer": "Ничего страшного.\nПравильный ответ - {}\n"
     }
 
-    def __init__(self, counter_max):
-        self._current_word = None
-        self._right_answer = None
+    def __init__(self):
+        self.word = None
+        self.answer = None
+        self._translated_so_far = 0
 
-        self._counter_max = counter_max
-        self._count = 0
-
-        self.change_current_word()
+        self.next_word()
 
     @property
-    def training_continues(self):
-        return self._count < self._counter_max
-
-    @property
-    def word(self):
-        return self._current_word
-
-    @property
-    def right_answer(self):
-        return self._right_answer
+    def should_continue_training(self):
+        return self._translated_so_far < WORDS_PER_TRAINING
 
     def check_right_answer(self, inp):
-        if inp == self._right_answer.word:
-            self.change_current_word()
-            self._count += 1
+        if inp == self.answer.word:
+            self.next_word()
+            self._translated_so_far += 1
             return self.PHRASES["right_answer"]
         elif any(word in inp.lower() for word in ("хз", "не знаю", "понятия")):
-            phrase = self.PHRASES["idk_answer"].format(self._right_answer.word)
-            self.change_current_word()
+            phrase = self.PHRASES["idk_answer"].format(self.answer.word)
+            self.next_word()
             return phrase
         return self.PHRASES["wrong_answer"]
 
-    def change_current_word(self):
+    def next_word(self):
         current_language = random.choice(["ru", "en"])
-
         random_word = get_random_word()
-        translate = get_word_translate(random_word, _from="ru", to="en")
+        translate = translate_word(random_word, from_lang="ru", to_lang="en")
         while not translate:
             random_word = get_random_word()
-            translate = get_word_translate(random_word, _from="ru", to="en")
+            translate = translate_word(random_word, from_lang="ru", to_lang="en")
         if current_language == "ru":
-            self._current_word = word(translate, "en")
-            self._right_answer = word(random_word, "ru")
+            self.word = Word(translate, "en")
+            self.answer = Word(random_word, "ru")
             return
-        self._current_word = word(random_word, "ru")
-        self._right_answer = word(translate, "en")
+        self.word = Word(random_word, "ru")
+        self.answer = Word(translate, "en")
