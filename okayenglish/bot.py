@@ -13,7 +13,7 @@ class Bot:
         self._sessions = {}
 
     def handle_request(self, req_json):
-        from okayenglish.db import User
+        from okayenglish.db import User, db
 
         req = RequestParser(req_json)
         response = ResponseParser(req)
@@ -21,9 +21,12 @@ class Bot:
         # Создание сессии для нового пользователя
         user_id = req.session["user_id"]
         if user_id not in self._sessions or req.new_session:
-            self._sessions[user_id] = Session(
-                User.query.filter_by(user_id=user_id).first()
-            )
+            user = User.query.filter_by(user_id=user_id).first()
+            if user is None:
+                user = User(user_id=req.user_id)
+                db.session.add(user)
+                db.session.commit()
+            self._sessions[user_id] = Session(user)
 
         session = self._sessions[user_id]
         session.receive(req)
