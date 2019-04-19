@@ -1,4 +1,5 @@
 from okayenglish.app import app
+
 # noinspection PyUnresolvedReferences
 from okayenglish.db import *
 

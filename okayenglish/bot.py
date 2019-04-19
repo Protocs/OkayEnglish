@@ -26,6 +26,7 @@ class Bot:
 
     def _create_new_session(self, request, user_id):
         from okayenglish.db import User, db
+
         user = User.query.filter_by(user_id=user_id).first()
         if user is None:
             user = User(user_id=request.user_id)

@@ -7,10 +7,7 @@ from okayenglish.local_settings import DICTIONARY_API_KEY
 
 DICTIONARY_API_SERVER = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup"
 
-LANGUAGE_NAMES = {
-    "ru": "русский язык",
-    "en": "английский язык"
-}
+LANGUAGE_NAMES = {"ru": "русский язык", "en": "английский язык"}
 
 
 def get_random_word():
@@ -23,7 +20,7 @@ def translate_word(word, from_lang, to_lang):
     params = {
         "key": DICTIONARY_API_KEY,
         "text": word,
-        "lang": from_lang + "-" + to_lang
+        "lang": from_lang + "-" + to_lang,
     }
     response = requests.get(DICTIONARY_API_SERVER, params).content
     try:

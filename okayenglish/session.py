@@ -41,8 +41,10 @@ class Session:
         self._current_state = WORD_TRAINING
         training = self._training_manager = WordTranslationTrainingManager()
         word_with_hidden_letters = hide_word_letters(training.answer.word)
-        text = f"Переведите слово \"{training.word.word}\" " \
+        text = (
+            f'Переведите слово "{training.word.word}" '
             f"на {LANGUAGE_NAMES[training.answer.language]}\n"
+        )
         text += f"Подсказка: {word_with_hidden_letters}\n"
         resp_parser.reply_text = text
 
