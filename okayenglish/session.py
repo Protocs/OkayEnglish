@@ -2,7 +2,7 @@ import re
 
 from okayenglish.states import *
 from okayenglish.texts import GREETING as GREETING_TEXT
-from okayenglish.training_manager import WordTranslationTrainingManager
+from okayenglish.trainings.word_training import WordTranslationTrainingManager
 from okayenglish.utils import hide_word_letters, LANGUAGE_NAMES
 
 
