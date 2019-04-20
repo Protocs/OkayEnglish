@@ -2,8 +2,9 @@ import re
 
 from okayenglish.states import *
 from okayenglish.texts import GREETING as GREETING_TEXT
-from okayenglish.training_manager import WordTranslationTrainingManager
-from okayenglish.utils import hide_word_letters, LANGUAGE_NAMES
+from okayenglish.training_manager import WordTranslationTrainingManager, \
+    SentenceTranslationTrainingManager
+from okayenglish.utils import hide_word_letters, LANGUAGE_NAMES, get_sentence_hints
 
 
 class Session:
@@ -21,7 +22,7 @@ class Session:
         elif self._current_state == WORD_TRAINING:
             self.handle_word_training_question(req_parser, resp_parser)
         elif self._current_state == SENTENCE_TRAINING:
-            ...  # TODO
+            self.handle_sentence_training_question(req_parser, resp_parser)
         elif self._current_state == TEXT_TRAINING:
             ...  # TODO
 
@@ -29,9 +30,7 @@ class Session:
         if re.findall("1|слов", req_parser.text, re.IGNORECASE):
             self.begin_word_training(resp_parser)
         if re.findall("2|предложени", req_parser.text, re.IGNORECASE):
-            self._current_state = SENTENCE_TRAINING
-            self._training_manager = ...
-            ...  # TODO
+            self.begin_sentence_training(resp_parser)
         if re.findall("3|текст", req_parser.text, re.IGNORECASE):
             self._current_state = TEXT_TRAINING
             self._training_manager = ...
@@ -48,9 +47,20 @@ class Session:
         text += f"Подсказка: {word_with_hidden_letters}\n"
         resp_parser.reply_text = text
 
+    def begin_sentence_training(self, resp_parser):
+        self._current_state = SENTENCE_TRAINING
+        training = self._training_manager = SentenceTranslationTrainingManager()
+        hints = get_sentence_hints(training.answer)
+        text = (
+            f'Переведите предложение "{training.sentence.strip()}" '
+            f"на английский\n"
+        )
+        text += f"Подсказки: {', '.join(hints)}\n"
+        resp_parser.reply_text = text
+
     def handle_word_training_question(self, req_parser, resp_parser):
         training = self._training_manager
-        text = training.check_right_answer(req_parser.text)
+        text = training.check_answer(req_parser.text)
         # Если количество отработанных слов равняется ``counter_max``,
         # значит тренировка окончена
         if not training.should_continue_training:
@@ -68,3 +78,25 @@ class Session:
             )
             text += f"Подсказка: {word_with_hidden_letters}\n"
         resp_parser.reply_text = text
+
+    def handle_sentence_training_question(self, req_parser, resp_parser):
+        training = self._training_manager
+        text = training.check_answer(req_parser.text)
+        # Если количество отработанных предложений равняется ``counter_max``,
+        # значит тренировка окончена
+        if not training.should_continue_training:
+            text += "Тренировка окончена."
+            self._training_manager = None
+            # Состояние после
+            # последнего отработанного предложения - состояние выбора тренировки
+            self._current_state = TRAINING_SELECT
+            text += "\nВыбирайте новую тренировку"
+        else:
+            hints = get_sentence_hints(training.answer)
+            text += (
+                f'Переведите предложение "{training.sentence.strip()}" '
+                f"на английский\n"
+            )
+            text += f"Подсказки: {', '.join(hints)}\n"
+            resp_parser.reply_text = text
+

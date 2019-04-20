@@ -2,31 +2,64 @@ import json
 import random
 from collections import namedtuple
 import requests
+import re
 
-from okayenglish.local_settings import DICTIONARY_API_KEY
+from okayenglish.local_settings import DICTIONARY_API_KEY, TRANSLATE_API_KEY
 
+TRANSLATE_API_SERVER = "https://translate.yandex.net/api/v1.5/tr.json/translate"
 DICTIONARY_API_SERVER = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup"
 
-LANGUAGE_NAMES = {"ru": "русский язык", "en": "английский язык"}
+LANGUAGE_NAMES = {
+    "ru": "русский язык",
+    "en": "английский язык"
+}
 
 
-def get_random_word():
+def get_random_russian_word():
     with open("okayenglish/static/russian_words.txt", encoding="utf-8") as file:
         words = file.readlines()
         return random.choice(words).strip()
+
+
+def get_random_english_word():
+    with open("okayenglish/static/english_words.txt", encoding="utf-8") as file:
+        words = file.readlines()
+        return random.choice(words).strip()
+
+
+def get_random_sentence():
+    with open("okayenglish/static/sentences.txt", encoding="utf-8") as f:
+        return random.choice(f.readlines())
 
 
 def translate_word(word, from_lang, to_lang):
     params = {
         "key": DICTIONARY_API_KEY,
         "text": word,
-        "lang": from_lang + "-" + to_lang,
+        "lang": from_lang + "-" + to_lang
     }
     response = requests.get(DICTIONARY_API_SERVER, params).content
     try:
         return json.loads(response)["def"][0]["tr"][0]["text"]
     except IndexError:
         return False
+
+
+def translate_sentence(sentence):
+    params = {
+        "key": TRANSLATE_API_KEY,
+        "text": sentence,
+        "lang": "en-ru"
+    }
+    response = requests.get(TRANSLATE_API_SERVER, params)
+    try:
+        return response.json()["text"][0]
+    except IndexError:
+        return False
+
+
+def checkable_sentence(sentence):
+    return re.sub(r"[.?]", "", sentence.lower().strip())
 
 
 def hide_word_letters(word):
@@ -37,6 +70,14 @@ def hide_word_letters(word):
             random_index = random.randint(0, len(word) - 1)
         letters[random_index] = None
     return " ".join(map(lambda l: "_" if not l else l, letters))
+
+
+def get_sentence_hints(translated_sentence):
+    hints = checkable_sentence(translated_sentence).split()
+    duds_to_add = len(hints)
+    hints += [get_random_english_word() for _ in range(duds_to_add)]
+    random.shuffle(hints)
+    return hints
 
 
 Word = namedtuple("word", "word language")
