@@ -1,6 +1,5 @@
 import json
 import random
-from collections import namedtuple
 import requests
 import re
 
@@ -86,4 +85,11 @@ def get_sentence_hints(translated_sentence):
     return hints
 
 
-Word = namedtuple("word", "word language")
+class Word:
+    def __init__(self, word, language):
+        self.word = word
+        self.language = language
+
+    def __str__(self):
+        return self.word
+

@@ -73,7 +73,7 @@ class Session:
 
     def handle_phrasal_verb_training_question(self, req_parser, resp_parser):
         training = self._training_manager
-        text = training.check_right_answer(req_parser.text)
+        text = training.check_answer(req_parser.text)
         if not training.should_continue_training:
             text += "Тренировка окончена."
             self._training_manager = None
@@ -81,7 +81,7 @@ class Session:
             text += "\nВыбирайте новую тренировку"
         else:
             phrase_with_hidden_letters = hide_word_letters(training.answer.word)
-            text += f"Переведите фразу «{training.phrase.word}» на русский язык\n"
+            text += f"Переведите фразу «{training.item_to_translate.word}» на русский язык\n"
             text += f"Подсказка: {phrase_with_hidden_letters}\n"
         resp_parser.reply_text = text
 
@@ -100,7 +100,7 @@ class Session:
         else:
             word_with_hidden_letters = hide_word_letters(training.answer.word)
             text += (
-                f'Переведите слово «{training.word.word}» '
+                f'Переведите слово «{training.item_to_translate.word}» '
                 f"на {LANGUAGE_NAMES[training.answer.language]}\n"
             )
             text += f"Подсказка: {word_with_hidden_letters}\n"
@@ -125,7 +125,7 @@ class Session:
         else:
             hints = get_sentence_hints(training.answer)
             text += (
-                f'Переведите предложение "{training.sentence.strip()}" '
+                f'Переведите предложение "{training.item_to_translate.strip()}" '
                 f"на английский\n"
             )
             text += f"Подсказки: {', '.join(hints)}\n"

@@ -31,8 +31,9 @@ class TrainingManager(ABC):
             self._translated_so_far += 1
             return self._PHRASES["right_answer"]
         elif any(word in inp.lower() for word in ("хз", "не знаю", "понятия")):
+            phrase = self._PHRASES["idk_answer"].format(self.answer)
             self.next_item()
-            return self._PHRASES["idk_answer"].format(self.answer)
+            return phrase
         return self._PHRASES["wrong_answer"]
 
     @abstractmethod
