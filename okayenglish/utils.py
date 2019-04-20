@@ -16,6 +16,12 @@ def get_random_word():
         return random.choice(words).strip()
 
 
+def get_random_phrasal_verb():
+    with open("okayenglish/static/phrasal_verbs.txt", encoding="utf-8") as file:
+        phrases = file.readlines()
+        return random.choice(phrases).strip()
+
+
 def translate_word(word, from_lang, to_lang):
     params = {
         "key": DICTIONARY_API_KEY,
