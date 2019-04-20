@@ -2,8 +2,9 @@ import re
 
 from okayenglish.states import *
 from okayenglish.texts import GREETING as GREETING_TEXT
-from okayenglish.training_manager import WordTranslationTrainingManager, \
-    SentenceTranslationTrainingManager
+from okayenglish.trainings.word_training import WordTranslationTrainingManager
+from okayenglish.trainings.sentence_training import SentenceTranslationTrainingManager
+from okayenglish.trainings.phrasal_verbs_training import PhrasalVerbsTrainingManager
 from okayenglish.utils import hide_word_letters, LANGUAGE_NAMES, get_sentence_hints
 
 
@@ -23,6 +24,8 @@ class Session:
             self.handle_word_training_question(req_parser, resp_parser)
         elif self._current_state == SENTENCE_TRAINING:
             self.handle_sentence_training_question(req_parser, resp_parser)
+        elif self._current_state == PHRASAL_VERBS_TRAINING:
+            self.handle_phrasal_verb_training_question(req_parser, resp_parser)
         elif self._current_state == TEXT_TRAINING:
             ...  # TODO
 
@@ -35,13 +38,15 @@ class Session:
             self._current_state = TEXT_TRAINING
             self._training_manager = ...
             ...  # TODO
+        if re.findall("4|фраз", req_parser.text, re.IGNORECASE):
+            self.begin_phrasal_verbs_training(resp_parser)
 
     def begin_word_training(self, resp_parser):
         self._current_state = WORD_TRAINING
         training = self._training_manager = WordTranslationTrainingManager()
         word_with_hidden_letters = hide_word_letters(training.answer.word)
         text = (
-            f'Переведите слово "{training.word.word}" '
+            f'Переведите слово «{training.word.word}» '
             f"на {LANGUAGE_NAMES[training.answer.language]}\n"
         )
         text += f"Подсказка: {word_with_hidden_letters}\n"
@@ -56,6 +61,28 @@ class Session:
             f"на английский\n"
         )
         text += f"Подсказки: {', '.join(hints)}\n"
+        resp_parser.reply_text = text
+
+    def begin_phrasal_verbs_training(self, resp_parser):
+        self._current_state = PHRASAL_VERBS_TRAINING
+        training = self._training_manager = PhrasalVerbsTrainingManager()
+        phrase_with_hidden_letters = hide_word_letters(training.answer.word)
+        text = f"Переведите фразу «{training.phrase.word}» на русский язык\n"
+        text += f"Подсказка: {phrase_with_hidden_letters}\n"
+        resp_parser.reply_text = text
+
+    def handle_phrasal_verb_training_question(self, req_parser, resp_parser):
+        training = self._training_manager
+        text = training.check_right_answer(req_parser.text)
+        if not training.should_continue_training:
+            text += "Тренировка окончена."
+            self._training_manager = None
+            self._current_state = TRAINING_SELECT
+            text += "\nВыбирайте новую тренировку"
+        else:
+            phrase_with_hidden_letters = hide_word_letters(training.answer.word)
+            text += f"Переведите фразу «{training.phrase.word}» на русский язык\n"
+            text += f"Подсказка: {phrase_with_hidden_letters}\n"
         resp_parser.reply_text = text
 
     def handle_word_training_question(self, req_parser, resp_parser):
@@ -73,7 +100,7 @@ class Session:
         else:
             word_with_hidden_letters = hide_word_letters(training.answer.word)
             text += (
-                f'Переведите слово "{training.word.word}" '
+                f'Переведите слово «{training.word.word}» '
                 f"на {LANGUAGE_NAMES[training.answer.language]}\n"
             )
             text += f"Подсказка: {word_with_hidden_letters}\n"
@@ -99,4 +126,3 @@ class Session:
             )
             text += f"Подсказки: {', '.join(hints)}\n"
             resp_parser.reply_text = text
-
