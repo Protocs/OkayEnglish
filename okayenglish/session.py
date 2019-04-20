@@ -2,8 +2,8 @@ import re
 
 from okayenglish.states import *
 from okayenglish.texts import GREETING as GREETING_TEXT
-from okayenglish.trainings.word_training import WordTranslationTrainingManager
-from okayenglish.trainings.sentence_training import SentenceTranslationTrainingManager
+from okayenglish.trainings.word_training import WordTrainingManager
+from okayenglish.trainings.sentence_training import SentenceTrainingManager
 from okayenglish.trainings.phrasal_verbs_training import PhrasalVerbsTrainingManager
 from okayenglish.utils import hide_word_letters, LANGUAGE_NAMES, get_sentence_hints
 
@@ -43,10 +43,10 @@ class Session:
 
     def begin_word_training(self, resp_parser):
         self._current_state = WORD_TRAINING
-        training = self._training_manager = WordTranslationTrainingManager()
+        training = self._training_manager = WordTrainingManager()
         word_with_hidden_letters = hide_word_letters(training.answer.word)
         text = (
-            f'Переведите слово «{training.word.word}» '
+            f'Переведите слово «{training.item_to_translate.word}» '
             f"на {LANGUAGE_NAMES[training.answer.language]}\n"
         )
         text += f"Подсказка: {word_with_hidden_letters}\n"
@@ -54,10 +54,10 @@ class Session:
 
     def begin_sentence_training(self, resp_parser):
         self._current_state = SENTENCE_TRAINING
-        training = self._training_manager = SentenceTranslationTrainingManager()
+        training = self._training_manager = SentenceTrainingManager()
         hints = get_sentence_hints(training.answer)
         text = (
-            f'Переведите предложение "{training.sentence.strip()}" '
+            f'Переведите предложение "{training.item_to_translate.strip()}" '
             f"на английский\n"
         )
         text += f"Подсказки: {', '.join(hints)}\n"
@@ -67,7 +67,7 @@ class Session:
         self._current_state = PHRASAL_VERBS_TRAINING
         training = self._training_manager = PhrasalVerbsTrainingManager()
         phrase_with_hidden_letters = hide_word_letters(training.answer.word)
-        text = f"Переведите фразу «{training.phrase.word}» на русский язык\n"
+        text = f"Переведите фразу «{training.item_to_translate.word}» на русский язык\n"
         text += f"Подсказка: {phrase_with_hidden_letters}\n"
         resp_parser.reply_text = text
 
