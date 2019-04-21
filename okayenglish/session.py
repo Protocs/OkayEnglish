@@ -15,6 +15,7 @@ class Session:
         self._training_manager = None
 
     def handle_state(self, req_parser, resp_parser):
+        resp_parser['response']['buttons'] = self.get_suggests()
         if self._current_state == GREETING:
             resp_parser.reply_text = GREETING_TEXT
             self._current_state = TRAINING_SELECT
@@ -126,3 +127,11 @@ class Session:
             )
             text += f"Подсказки: {', '.join(hints)}\n"
         resp_parser.reply_text = text
+
+    def get_suggests(self):
+        suggests = [
+            {'title': training[3:], 'hide': True}
+            for training in TRAININGS_TEXT.split('\n')[1:-1]
+        ]
+
+        return suggests
