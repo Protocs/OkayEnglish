@@ -1,7 +1,7 @@
 import re
 
 from okayenglish.states import *
-from okayenglish.texts import GREETING as GREETING_TEXT
+from okayenglish.texts import GREETING as GREETING_TEXT, TRAININGS as TRAININGS_TEXT
 from okayenglish.trainings.word_training import WordTrainingManager
 from okayenglish.trainings.sentence_training import SentenceTrainingManager
 from okayenglish.trainings.phrasal_verbs_training import PhrasalVerbsTrainingManager
@@ -78,11 +78,7 @@ class Session:
             text += "Тренировка окончена."
             self._training_manager = None
             self._current_state = TRAINING_SELECT
-            text += "\nВыбирайте новую тренировку" \
-                    "\n1) Перевод слов" \
-                    "\n2) Перевод предложений" \
-                    "\n3) Чтение текста" \
-                    "\n4) Перевод фразовых глаголов."
+            text += "\nВыбирайте новую тренировку" + TRAININGS_TEXT
         else:
             phrase_with_hidden_letters = hide_word_letters(training.answer.word)
             text += f"Переведите фразу «{training.item_to_translate.word}» на русский язык\n"
@@ -100,11 +96,7 @@ class Session:
             # Состояние после
             # последнего отработанного слова - состояние выбора тренировки
             self._current_state = TRAINING_SELECT
-            text += "\nВыбирайте новую тренировку" \
-                    "\n1) Перевод слов" \
-                    "\n2) Перевод предложений" \
-                    "\n3) Чтение текста" \
-                    "\n4) Перевод фразовых глаголов."
+            text += "\nВыбирайте новую тренировку" + TRAININGS_TEXT
         else:
             word_with_hidden_letters = hide_word_letters(training.answer.word)
             text += (
@@ -125,11 +117,7 @@ class Session:
             # Состояние после
             # последнего отработанного предложения - состояние выбора тренировки
             self._current_state = TRAINING_SELECT
-            text += "\nВыбирайте новую тренировку" \
-                    "\n1) Перевод слов" \
-                    "\n2) Перевод предложений" \
-                    "\n3) Чтение текста" \
-                    "\n4) Перевод фразовых глаголов."
+            text += "\nВыбирайте новую тренировку" + TRAININGS_TEXT
         else:
             hints = get_sentence_hints(training.answer)
             text += (
