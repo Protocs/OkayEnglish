@@ -43,7 +43,7 @@ class Session:
 
     def begin_word_training(self, resp_parser):
         self._current_state = WORD_TRAINING
-        training = self._training_manager = WordTrainingManager()
+        training = self._training_manager = WordTrainingManager(self)
         word_with_hidden_letters = hide_word_letters(training.answer.word)
         text = (
             f'Переведите слово «{training.item_to_translate.word}» '
@@ -54,7 +54,7 @@ class Session:
 
     def begin_sentence_training(self, resp_parser):
         self._current_state = SENTENCE_TRAINING
-        training = self._training_manager = SentenceTrainingManager()
+        training = self._training_manager = SentenceTrainingManager(self)
         hints = get_sentence_hints(training.answer)
         text = (
             f'Переведите предложение "{training.item_to_translate.strip()}" '
@@ -65,7 +65,7 @@ class Session:
 
     def begin_phrasal_verbs_training(self, resp_parser):
         self._current_state = PHRASAL_VERBS_TRAINING
-        training = self._training_manager = PhrasalVerbsTrainingManager()
+        training = self._training_manager = PhrasalVerbsTrainingManager(self)
         phrase_with_hidden_letters = hide_word_letters(training.answer.word)
         text = f"Переведите фразу «{training.item_to_translate.word}» на русский язык\n"
         text += f"Подсказка: {phrase_with_hidden_letters}\n"
