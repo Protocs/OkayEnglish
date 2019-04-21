@@ -9,11 +9,7 @@ class TrainingManager(ABC):
         "wrong_answer": "Это неправильный ответ.\n"
                         "Если не знаете перевода, просто скажите «не знаю».\n",
         "idk_answer": "Ничего страшного.\nПравильный ответ - {}\n",
-        "stop": "Хорошо, хватит так хватит. Хотите выбрать другую тренировку?" \
-                "\n1) Перевод слов" \
-                "\n2) Перевод предложений" \
-                "\n3) Чтение текста" \
-                "\n4) Перевод фразовых глаголов."
+        "stop": "Хорошо, хватит так хватит. "
     }
     ITEMS_PER_TRAINING = 5
 
@@ -23,11 +19,14 @@ class TrainingManager(ABC):
         self.answer = None
         self._translated_so_far = 0
 
+        self._training_interrupt = False
+
         self.next_item()
 
     @property
     def should_continue_training(self):
-        return self._translated_so_far < self.ITEMS_PER_TRAINING
+        return self._translated_so_far < self.ITEMS_PER_TRAINING \
+               and not self._training_interrupt
 
     @abstractmethod
     def check_input(self, inp, answer):
@@ -45,6 +44,7 @@ class TrainingManager(ABC):
         elif any(word in inp.lower() for word in ("хватит", "достаточно")):
             self._session._current_state = TRAINING_SELECT
             self._session._training_manager = None
+            self._training_interrupt = True
             return self._PHRASES["stop"]
         return self._PHRASES["wrong_answer"]
 
