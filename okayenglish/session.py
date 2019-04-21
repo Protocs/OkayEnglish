@@ -15,10 +15,9 @@ class Session:
         self._training_manager = None
 
     def handle_state(self, req_parser, resp_parser):
-        resp_parser['response']['buttons'] = self.get_suggests()
         if self._current_state == GREETING:
             resp_parser.reply_text = GREETING_TEXT
-            self._current_state = TRAINING_SELECT
+            self.change_current_state(TRAINING_SELECT, resp_parser)
         elif self._current_state == TRAINING_SELECT:
             self.select_training(req_parser, resp_parser)
         elif self._current_state == WORD_TRAINING:
@@ -36,14 +35,14 @@ class Session:
         if re.findall("2|предложени", req_parser.text, re.IGNORECASE):
             self.begin_sentence_training(resp_parser)
         if re.findall("3|текст", req_parser.text, re.IGNORECASE):
-            self._current_state = TEXT_TRAINING
+            self.change_current_state(TEXT_TRAINING, resp_parser)
             self._training_manager = ...
             ...  # TODO
         if re.findall("4|фраз", req_parser.text, re.IGNORECASE):
             self.begin_phrasal_verbs_training(resp_parser)
 
     def begin_word_training(self, resp_parser):
-        self._current_state = WORD_TRAINING
+        self.change_current_state(WORD_TRAINING, resp_parser)
         training = self._training_manager = WordTrainingManager(self)
         word_with_hidden_letters = hide_word_letters(training.answer.word)
         text = (
@@ -54,7 +53,7 @@ class Session:
         resp_parser.reply_text = text
 
     def begin_sentence_training(self, resp_parser):
-        self._current_state = SENTENCE_TRAINING
+        self.change_current_state(SENTENCE_TRAINING, resp_parser)
         training = self._training_manager = SentenceTrainingManager(self)
         hints = get_sentence_hints(training.answer)
         text = (
@@ -65,7 +64,7 @@ class Session:
         resp_parser.reply_text = text
 
     def begin_phrasal_verbs_training(self, resp_parser):
-        self._current_state = PHRASAL_VERBS_TRAINING
+        self.change_current_state(PHRASAL_VERBS_TRAINING, resp_parser)
         training = self._training_manager = PhrasalVerbsTrainingManager(self)
         phrase_with_hidden_letters = hide_word_letters(training.answer.word)
         text = f"Переведите фразу «{training.item_to_translate.word}» на русский язык\n"
@@ -78,7 +77,7 @@ class Session:
         if not training.should_continue_training:
             text += "Тренировка окончена."
             self._training_manager = None
-            self._current_state = TRAINING_SELECT
+            self.change_current_state(TRAINING_SELECT, resp_parser)
             text += "\nВыбирайте новую тренировку" + TRAININGS_TEXT
         else:
             phrase_with_hidden_letters = hide_word_letters(training.answer.word)
@@ -96,7 +95,7 @@ class Session:
             self._training_manager = None
             # Состояние после
             # последнего отработанного слова - состояние выбора тренировки
-            self._current_state = TRAINING_SELECT
+            self.change_current_state(TRAINING_SELECT, resp_parser)
             text += "\nВыбирайте новую тренировку" + TRAININGS_TEXT
         else:
             word_with_hidden_letters = hide_word_letters(training.answer.word)
@@ -117,7 +116,7 @@ class Session:
             self._training_manager = None
             # Состояние после
             # последнего отработанного предложения - состояние выбора тренировки
-            self._current_state = TRAINING_SELECT
+            self.change_current_state(TRAINING_SELECT, resp_parser)
             text += "\nВыбирайте новую тренировку" + TRAININGS_TEXT
         else:
             hints = get_sentence_hints(training.answer)
@@ -128,10 +127,16 @@ class Session:
             text += f"Подсказки: {', '.join(hints)}\n"
         resp_parser.reply_text = text
 
-    def get_suggests(self):
+    def get_training_buttons(self):
         suggests = [
             {'title': training[3:], 'hide': True}
             for training in TRAININGS_TEXT.split('\n')[1:-1]
         ]
 
         return suggests
+
+    def change_current_state(self, new_state, resp_parser):
+        resp_parser['response']['buttons'] = []
+        if new_state == TRAINING_SELECT:
+            resp_parser['response']['buttons'] = self.get_training_buttons()
+        self._current_state = new_state
