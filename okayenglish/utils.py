@@ -68,13 +68,13 @@ def checkable_sentence(sentence):
 
 
 def hide_word_letters(word):
-    letters = list(word)
+    letters = list(word.replace(" ", "_"))
     for _ in range(len(word) // 2 + 1):
         random_index = random.randint(0, len(word) - 1)
-        while not letters[random_index] or letters[random_index] == " ":
+        while letters[random_index] in ("*", "_"):
             random_index = random.randint(0, len(word) - 1)
-        letters[random_index] = None
-    return " ".join(map(lambda l: "_" if not l else l, letters))
+        letters[random_index] = "*"
+    return " ".join(letters)
 
 
 def get_sentence_hints(translated_sentence):
