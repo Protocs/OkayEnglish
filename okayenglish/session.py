@@ -43,7 +43,7 @@ class Session:
 
     def begin_word_training(self, resp_parser):
         self._current_state = WORD_TRAINING
-        training = self._training_manager = WordTrainingManager()
+        training = self._training_manager = WordTrainingManager(self)
         word_with_hidden_letters = hide_word_letters(training.answer.word)
         text = (
             f'Переведите слово «{training.item_to_translate.word}» '
@@ -54,21 +54,41 @@ class Session:
 
     def begin_sentence_training(self, resp_parser):
         self._current_state = SENTENCE_TRAINING
-        training = self._training_manager = SentenceTrainingManager()
-        hints = get_sentence_hints(training.answer)
-        text = (
-            f'Переведите предложение "{training.item_to_translate.strip()}" '
-            f"на английский\n"
-        )
-        text += f"Подсказки: {', '.join(hints)}\n"
+        training = self._training_manager = SentenceTrainingManager(self)
+        if not training.should_continue_training:
+            text += "Тренировка окончена."
+            self._training_manager = None
+            self._current_state = TRAINING_SELECT
+            text += "\nВыбирайте новую тренировку" \
+                    "\n1) Перевод слов" \
+                    "\n2) Перевод предложений" \
+                    "\n3) Чтение текста" \
+                    "\n4) Перевод фразовых глаголов."
+        else:
+            hints = get_sentence_hints(training.answer)
+            text = (
+                f'Переведите предложение "{training.item_to_translate.strip()}" '
+                f"на английский\n"
+            )
+            text += f"Подсказки: {', '.join(hints)}\n"
         resp_parser.reply_text = text
 
     def begin_phrasal_verbs_training(self, resp_parser):
         self._current_state = PHRASAL_VERBS_TRAINING
-        training = self._training_manager = PhrasalVerbsTrainingManager()
-        phrase_with_hidden_letters = hide_word_letters(training.answer.word)
-        text = f"Переведите фразу «{training.item_to_translate.word}» на русский язык\n"
-        text += f"Подсказка: {phrase_with_hidden_letters}\n"
+        training = self._training_manager = PhrasalVerbsTrainingManager(self)
+        if not training.should_continue_training:
+            text += "Тренировка окончена."
+            self._training_manager = None
+            self._current_state = TRAINING_SELECT
+            text += "\nВыбирайте новую тренировку" \
+                    "\n1) Перевод слов" \
+                    "\n2) Перевод предложений" \
+                    "\n3) Чтение текста" \
+                    "\n4) Перевод фразовых глаголов."
+        else:
+            phrase_with_hidden_letters = hide_word_letters(training.answer.word)
+            text = f"Переведите фразу «{training.item_to_translate.word}» на русский язык\n"
+            text += f"Подсказка: {phrase_with_hidden_letters}\n"
         resp_parser.reply_text = text
 
     def handle_phrasal_verb_training_question(self, req_parser, resp_parser):
@@ -78,7 +98,11 @@ class Session:
             text += "Тренировка окончена."
             self._training_manager = None
             self._current_state = TRAINING_SELECT
-            text += "\nВыбирайте новую тренировку"
+            text += "\nВыбирайте новую тренировку" \
+                    "\n1) Перевод слов" \
+                    "\n2) Перевод предложений" \
+                    "\n3) Чтение текста" \
+                    "\n4) Перевод фразовых глаголов."
         else:
             phrase_with_hidden_letters = hide_word_letters(training.answer.word)
             text += f"Переведите фразу «{training.item_to_translate.word}» на русский язык\n"
@@ -96,7 +120,11 @@ class Session:
             # Состояние после
             # последнего отработанного слова - состояние выбора тренировки
             self._current_state = TRAINING_SELECT
-            text += "\nВыбирайте новую тренировку"
+            text += "\nВыбирайте новую тренировку" \
+                    "\n1) Перевод слов" \
+                    "\n2) Перевод предложений" \
+                    "\n3) Чтение текста" \
+                    "\n4) Перевод фразовых глаголов."
         else:
             word_with_hidden_letters = hide_word_letters(training.answer.word)
             text += (
@@ -129,4 +157,4 @@ class Session:
                 f"на английский\n"
             )
             text += f"Подсказки: {', '.join(hints)}\n"
-            resp_parser.reply_text = text
+        resp_parser.reply_text = text
