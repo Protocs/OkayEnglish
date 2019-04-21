@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+from okayenglish.states import TRAINING_SELECT
+
 
 class TrainingManager(ABC):
     _PHRASES = {
@@ -7,10 +9,16 @@ class TrainingManager(ABC):
         "wrong_answer": "Это неправильный ответ.\n"
                         "Если не знаете перевода, просто скажите «не знаю».\n",
         "idk_answer": "Ничего страшного.\nПравильный ответ - {}\n",
+        "stop": "Хорошо, хватит так хватит. Хотите выбрать другую тренировку?" \
+                "\n1) Перевод слов" \
+                "\n2) Перевод предложений" \
+                "\n3) Чтение текста" \
+                "\n4) Перевод фразовых глаголов."
     }
     ITEMS_PER_TRAINING = 5
 
-    def __init__(self):
+    def __init__(self, session):
+        self._session = session
         self.item_to_translate = None
         self.answer = None
         self._translated_so_far = 0
@@ -34,6 +42,10 @@ class TrainingManager(ABC):
             phrase = self._PHRASES["idk_answer"].format(self.answer)
             self.next_item()
             return phrase
+        elif any(word in inp.lower() for word in ("хватит", "достаточно")):
+            self._session._current_state = TRAINING_SELECT
+            self._session._training_manager = None
+            return self._PHRASES["stop"]
         return self._PHRASES["wrong_answer"]
 
     @abstractmethod
