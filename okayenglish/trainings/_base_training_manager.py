@@ -29,6 +29,7 @@ class TrainingManager(ABC):
         self.item_to_translate = None
         self.answer = None
         self._translated_so_far = 0
+        self._wrong_answers = 0
 
         self._training_interrupt = False
 
@@ -51,15 +52,20 @@ class TrainingManager(ABC):
         elif any(word in inp.lower() for word in ("хз", "не знаю", "понятия")):
             phrase = self._PHRASES["idk_answer"].format(self.answer)
             self.next_item()
+            self._wrong_answers += 1
             return phrase
         elif any(word in inp.lower() for word in ("хватит", "достаточно")):
             self._session._current_state = TRAINING_SELECT
             self._session._training_manager = None
             self._training_interrupt = True
             return random.choice(self._PHRASES["stop"])
+        self._wrong_answers += 1
         return random.choice(self._PHRASES["wrong_answer"]) \
                + "\n" + self._PHRASES["if_idk"]
 
     @abstractmethod
     def next_item(self):
         pass
+
+    def get_stats(self):
+        return self._translated_so_far, self._wrong_answers

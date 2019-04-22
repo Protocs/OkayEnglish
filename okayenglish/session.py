@@ -70,6 +70,7 @@ class Session:
         text = training.check_answer(req_parser.text)
         if not training.should_continue_training:
             text += "Тренировка окончена."
+            self.save_stats(req_parser)
             self._training_manager = None
             self.change_current_state(TRAINING_SELECT, resp_parser)
             text += "\nВыбирайте новую тренировку" + TRAININGS_TEXT
@@ -86,6 +87,7 @@ class Session:
         # значит тренировка окончена
         if not training.should_continue_training:
             text += "Тренировка окончена."
+            self.save_stats(req_parser)
             self._training_manager = None
             # Состояние после
             # последнего отработанного слова - состояние выбора тренировки
@@ -107,6 +109,7 @@ class Session:
         # значит тренировка окончена
         if not training.should_continue_training:
             text += "Тренировка окончена."
+            self.save_stats(req_parser)
             self._training_manager = None
             # Состояние после
             # последнего отработанного предложения - состояние выбора тренировки
@@ -120,6 +123,17 @@ class Session:
             )
             text += f"Подсказки: {', '.join(hints)}\n"
         resp_parser.reply_text = text
+
+    def save_stats(self, req_parser):
+        from okayenglish.db import db, TrainingStats
+        stats = self._training_manager.get_stats()
+        db.session.add(TrainingStats(
+            user_id=req_parser.user_id,
+            right_answers=stats[0],
+            wrong_answers=stats[1],
+            training_type=self._current_state
+        ))
+        db.session.commit()
 
     def change_current_state(self, new_state, resp_parser):
         resp_parser['response']['buttons'] = []

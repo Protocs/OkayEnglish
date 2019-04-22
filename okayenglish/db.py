@@ -13,6 +13,6 @@ class TrainingStats(db.Model):
     date = db.Column(db.DateTime, default=lambda: datetime.now())
     right_answers = db.Column(db.Integer, nullable=False)
     wrong_answers = db.Column(db.Integer, nullable=False)
-
+    training_type = db.Column(db.String(22), nullable=False)
 
 db.create_all()
