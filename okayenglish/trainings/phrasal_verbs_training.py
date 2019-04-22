@@ -5,7 +5,7 @@ from okayenglish.utils import translate_word, Word, get_random_phrasal_verb
 
 class PhrasalVerbsTrainingManager(TrainingManager):
     def check_input(self, inp, answer):
-        return inp == self.answer.word
+        return inp.lower().strip() == self.answer.word
 
     def next_item(self):
         random_phrase = get_random_phrasal_verb()

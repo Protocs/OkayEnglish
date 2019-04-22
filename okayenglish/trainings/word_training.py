@@ -7,7 +7,7 @@ from okayenglish.utils import translate_word, Word, \
 
 class WordTrainingManager(TrainingManager):
     def check_input(self, inp, answer):
-        return inp == answer.word
+        return inp.lower().strip() == answer.word
 
     def next_item(self):
         current_language = random.choice(["ru", "en"])
