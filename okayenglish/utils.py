@@ -22,9 +22,9 @@ TRAINING_NAMES = {
 }
 
 TRAINING_SUGGESTS = [
-    {'title': TRAINING_NAMES[training], 'hide': True}
-    for training in TRAINING_NAMES
-]
+                        {'title': TRAINING_NAMES[training], 'hide': True}
+                        for training in TRAINING_NAMES
+                    ] + [{'title': "Статистика", 'hide': True}]
 
 
 def get_random_russian_word():

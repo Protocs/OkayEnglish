@@ -2,7 +2,7 @@ import logging
 import re
 
 from okayenglish.states import *
-from okayenglish.texts import GREETING as GREETING_TEXT, TRAININGS as TRAININGS_TEXT, STATS as STATS_TEXT
+from okayenglish.texts import GREETING as GREETING_TEXT, TRAININGS as TRAININGS_TEXT
 from okayenglish.trainings.word_training import WordTrainingManager
 from okayenglish.trainings.sentence_training import SentenceTrainingManager
 from okayenglish.trainings.phrasal_verbs_training import PhrasalVerbsTrainingManager
