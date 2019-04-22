@@ -26,19 +26,13 @@ class Session:
             self.handle_sentence_training_question(req_parser, resp_parser)
         elif self._current_state == PHRASAL_VERBS_TRAINING:
             self.handle_phrasal_verb_training_question(req_parser, resp_parser)
-        elif self._current_state == TEXT_TRAINING:
-            ...  # TODO
 
     def select_training(self, req_parser, resp_parser):
         if re.findall("1|слов", req_parser.text, re.IGNORECASE):
             self.begin_word_training(resp_parser)
         if re.findall("2|предложени", req_parser.text, re.IGNORECASE):
             self.begin_sentence_training(resp_parser)
-        if re.findall("3|текст", req_parser.text, re.IGNORECASE):
-            self.change_current_state(TEXT_TRAINING, resp_parser)
-            self._training_manager = ...
-            ...  # TODO
-        if re.findall("4|фраз", req_parser.text, re.IGNORECASE):
+        if re.findall("3|фраз", req_parser.text, re.IGNORECASE):
             self.begin_phrasal_verbs_training(resp_parser)
 
     def begin_word_training(self, resp_parser):
