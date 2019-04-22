@@ -5,7 +5,7 @@ from okayenglish.texts import GREETING as GREETING_TEXT, TRAININGS as TRAININGS_
 from okayenglish.trainings.word_training import WordTrainingManager
 from okayenglish.trainings.sentence_training import SentenceTrainingManager
 from okayenglish.trainings.phrasal_verbs_training import PhrasalVerbsTrainingManager
-from okayenglish.utils import hide_word_letters, LANGUAGE_NAMES, get_sentence_hints
+from okayenglish.utils import hide_word_letters, LANGUAGE_NAMES, get_sentence_hints, TRAINING_SUGGESTS
 
 
 class Session:
@@ -127,16 +127,8 @@ class Session:
             text += f"Подсказки: {', '.join(hints)}\n"
         resp_parser.reply_text = text
 
-    def get_training_buttons(self):
-        suggests = [
-            {'title': training[3:], 'hide': True}
-            for training in TRAININGS_TEXT.split('\n')[1:-1]
-        ]
-
-        return suggests
-
     def change_current_state(self, new_state, resp_parser):
         resp_parser['response']['buttons'] = []
         if new_state == TRAINING_SELECT:
-            resp_parser['response']['buttons'] = self.get_training_buttons()
+            resp_parser['response']['buttons'] = TRAINING_SUGGESTS
         self._current_state = new_state

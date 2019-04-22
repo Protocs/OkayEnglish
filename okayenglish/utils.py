@@ -4,6 +4,7 @@ import requests
 import re
 
 from okayenglish.local_settings import DICTIONARY_API_KEY, TRANSLATE_API_KEY
+from okayenglish.texts import TRAININGS
 
 TRANSLATE_API_SERVER = "https://translate.yandex.net/api/v1.5/tr.json/translate"
 DICTIONARY_API_SERVER = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup"
@@ -12,6 +13,11 @@ LANGUAGE_NAMES = {
     "ru": "русский язык",
     "en": "английский язык"
 }
+
+TRAINING_SUGGESTS = [
+            {'title': training[3:], 'hide': True}
+            for training in TRAININGS.split('\n')[1:-1]
+        ]
 
 
 def get_random_russian_word():
