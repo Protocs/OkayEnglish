@@ -16,3 +16,7 @@ class TrainingStats(db.Model):
     training_type = db.Column(db.String(22), nullable=False)
 
 db.create_all()
+
+def get_user_stats(user_id, training_type):
+    stats = TrainingStats.query.filter_by(user_id=user_id, training_type=training_type).all()
+    return stats

@@ -1,11 +1,12 @@
+import logging
 import re
 
 from okayenglish.states import *
-from okayenglish.texts import GREETING as GREETING_TEXT, TRAININGS as TRAININGS_TEXT
+from okayenglish.texts import GREETING as GREETING_TEXT, TRAININGS as TRAININGS_TEXT, STATS as STATS_TEXT
 from okayenglish.trainings.word_training import WordTrainingManager
 from okayenglish.trainings.sentence_training import SentenceTrainingManager
 from okayenglish.trainings.phrasal_verbs_training import PhrasalVerbsTrainingManager
-from okayenglish.utils import hide_word_letters, LANGUAGE_NAMES, get_sentence_hints, TRAINING_SUGGESTS
+from okayenglish.utils import hide_word_letters, LANGUAGE_NAMES, get_sentence_hints, TRAINING_SUGGESTS, TRAINING_NAMES
 
 
 class Session:
@@ -34,6 +35,8 @@ class Session:
             self.begin_sentence_training(resp_parser)
         if re.findall("3|фраз", req_parser.text, re.IGNORECASE):
             self.begin_phrasal_verbs_training(resp_parser)
+        if re.findall("статистика", req_parser.text, re.IGNORECASE):
+            self.handle_stats(req_parser, resp_parser)
 
     def begin_word_training(self, resp_parser):
         self.change_current_state(WORD_TRAINING, resp_parser)
@@ -122,6 +125,21 @@ class Session:
                 f"на английский\n"
             )
             text += f"Подсказки: {', '.join(hints)}\n"
+        resp_parser.reply_text = text
+
+    def handle_stats(self, req_parser, resp_parser):
+        from okayenglish.db import get_user_stats
+        self.change_current_state(STATS, resp_parser)
+        text = "Ваша статистика:\n"
+        for training in (WORD_TRAINING, PHRASAL_VERBS_TRAINING, SENTENCE_TRAINING):
+            stats = get_user_stats(req_parser.user_id, training)
+            if not stats:
+                continue
+            training_count = len(stats)
+            right_answers_percent = round(sum(tr.right_answers for tr in stats) / sum(
+                [tr.right_answers + tr.wrong_answers for tr in stats]) * 100, 2)
+            text += f"{TRAINING_NAMES[training]}: количество тренировок - {training_count}, процент правильных ответов - {right_answers_percent}%\n"
+        self.change_current_state(TRAINING_SELECT, resp_parser)
         resp_parser.reply_text = text
 
     def save_stats(self, req_parser):

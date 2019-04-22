@@ -5,6 +5,7 @@ import re
 
 from okayenglish.local_settings import DICTIONARY_API_KEY, TRANSLATE_API_KEY
 from okayenglish.texts import TRAININGS
+from okayenglish.states import WORD_TRAINING, PHRASAL_VERBS_TRAINING, SENTENCE_TRAINING
 
 TRANSLATE_API_SERVER = "https://translate.yandex.net/api/v1.5/tr.json/translate"
 DICTIONARY_API_SERVER = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup"
@@ -14,10 +15,16 @@ LANGUAGE_NAMES = {
     "en": "английский язык"
 }
 
+TRAINING_NAMES = {
+    WORD_TRAINING: "Перевод слов",
+    PHRASAL_VERBS_TRAINING: "Перевод фразовых глаголов",
+    SENTENCE_TRAINING: "Перевод предложений"
+}
+
 TRAINING_SUGGESTS = [
-            {'title': training[3:], 'hide': True}
-            for training in TRAININGS.split('\n')[1:-1]
-        ]
+    {'title': TRAINING_NAMES[training], 'hide': True}
+    for training in TRAINING_NAMES
+]
 
 
 def get_random_russian_word():
@@ -98,4 +105,3 @@ class Word:
 
     def __str__(self):
         return self.word
-
