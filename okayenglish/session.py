@@ -74,6 +74,7 @@ class Session:
         if not training.should_continue_training:
             text += "Тренировка окончена."
             self.save_stats(req_parser)
+            text += self.show_stats()
             self._training_manager = None
             self.change_current_state(TRAINING_SELECT, resp_parser)
             text += "\nВыбирайте новую тренировку" + TRAININGS_TEXT
@@ -91,6 +92,7 @@ class Session:
         if not training.should_continue_training:
             text += "Тренировка окончена."
             self.save_stats(req_parser)
+            text += self.show_stats()
             self._training_manager = None
             # Состояние после
             # последнего отработанного слова - состояние выбора тренировки
@@ -113,6 +115,8 @@ class Session:
         if not training.should_continue_training:
             text += "Тренировка окончена."
             self.save_stats(req_parser)
+            text += self.show_stats()
+
             self._training_manager = None
             # Состояние после
             # последнего отработанного предложения - состояние выбора тренировки
@@ -152,6 +156,14 @@ class Session:
             training_type=self._current_state
         ))
         db.session.commit()
+
+    def show_stats(self):
+        text = "\nРезультат тренировки: "
+        right_answers_percent = round(self._training_manager.get_stats()[0] /
+                                      (self._training_manager.get_stats()[0] + self._training_manager.get_stats()[1]) * 100, 2)
+        text += f"процент правильных ответов: {right_answers_percent}%"
+
+        return text
 
     def change_current_state(self, new_state, resp_parser):
         resp_parser['response']['buttons'] = []
