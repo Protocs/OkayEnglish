@@ -25,7 +25,7 @@ They speak English in USA. | Они говорят на английском в 
 I like reading detective stories. | Мне нравится читать детективные истории.
 I like geography and science. | Мне нравится география и наука.
 She doesn't study German on Monday. | Она не изучает немецкий в понедельник.
-Does she live in Paris? | Он живет в Париже?
+Does she live in Paris? | Она живет в Париже?
 He doesn't teach math. | Он не учит математику.
 Cats hate water. | Коты ненавидят воду.
 Every child likes an icecream. | Все дети любят мороженое.
@@ -34,7 +34,7 @@ The Earth is spherical. | Земля сферична.
 She doesn't use a computer. | Она не пользуется компьютером.
 It snows a lot in winter in Russia. | Зимой в России много снега.
 We live in Texas. | Мы живем в Техасе.
-You go to holiday every summer. | Мы уходим на каникулы каждое лето.
+You go to holiday every summer. | Вы уходите на каникулы каждое лето.
 Do you like spaghetti? | Тебе нравятся спагетти?
 My daughter does the laundry. | Моя дочь стирает белье.
 My brother takes out the trash. | Мой брат выбрасывает мусор.
@@ -45,7 +45,7 @@ We see them every week. | Мы видим их каждую неделю.
 I don't like tea. | Я не люблю чай.
 When does the train usually leave? | Когда обычно поезд уходит?
 She always forgets her purse. | Она всегда забывает свой кошелек.
-You don't have children. | У меня нет детей.
+You don't have children. | У тебя нет детей.
 I and my sister don't see each other anymore. | Я и моя сестра не видим друг друга больше.
 They don't go to school tomorrow. | Они не идут в школу завтра.
 She wants to be a dentist. | Она хочет быть дантистом.
@@ -53,7 +53,7 @@ Cows eat grass. | Коровы едят траву.
 My cat runs very fast. | Мой кот бегает очень быстро.
 She has a beehive full of bees. | У нее есть улей полный пчел.
 My son lives in London. | Мой сын живет в Лондоне.
-They don't have any money. | У меня нет денег.
+They don't have any money. | У них нет денег.
 She plays basketball. | Она играет в баскетбол.
 He catches the train every morning. | Он ловит поезд каждое утро.
 My sister works at the theater. | Моя сестра работает в театре.
