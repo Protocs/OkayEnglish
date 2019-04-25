@@ -63,8 +63,8 @@ class Session:
     def begin_phrasal_verbs_training(self, resp_parser):
         self.change_current_state(PHRASAL_VERBS_TRAINING, resp_parser)
         training = self._training_manager = PhrasalVerbsTrainingManager(self)
-        phrase_with_hidden_letters = hide_word_letters(training.answer.word)
-        text = f"Переведите фразу «{training.item_to_translate.word}» на русский язык\n"
+        phrase_with_hidden_letters = hide_word_letters(training.answer)
+        text = f"Переведите фразу «{training.item_to_translate}» на русский язык\n"
         text += f"Подсказка: {phrase_with_hidden_letters}\n"
         resp_parser.reply_text = text
 
@@ -79,8 +79,8 @@ class Session:
             self.change_current_state(TRAINING_SELECT, resp_parser)
             text += "\nВыбирайте новую тренировку" + TRAININGS_TEXT
         else:
-            phrase_with_hidden_letters = hide_word_letters(training.answer.word)
-            text += f"Переведите фразу «{training.item_to_translate.word}» на русский язык\n"
+            phrase_with_hidden_letters = hide_word_letters(training.answer)
+            text += f"Переведите фразу «{training.item_to_translate}» на русский язык\n"
             text += f"Подсказка: {phrase_with_hidden_letters}\n"
         resp_parser.reply_text = text
 

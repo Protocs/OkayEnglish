@@ -46,9 +46,9 @@ def get_random_sentence():
 
 
 def get_random_phrasal_verb():
-    with open("okayenglish/static/phrasal_verbs.txt", encoding="utf-8") as file:
-        phrases = file.readlines()
-        return random.choice(phrases).strip()
+    with open("okayenglish/static/phrasal_verbs.txt", encoding="utf-8") as f:
+        phrases = random.choice(f.readlines()).split('|')
+        return phrases[0].strip(), phrases[1].strip()
 
 
 def translate_word(word, from_lang, to_lang):
