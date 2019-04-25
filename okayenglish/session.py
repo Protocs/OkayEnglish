@@ -6,7 +6,8 @@ from okayenglish.texts import GREETING as GREETING_TEXT, TRAININGS as TRAININGS_
 from okayenglish.trainings.word_training import WordTrainingManager
 from okayenglish.trainings.sentence_training import SentenceTrainingManager
 from okayenglish.trainings.phrasal_verbs_training import PhrasalVerbsTrainingManager
-from okayenglish.utils import hide_word_letters, LANGUAGE_NAMES, get_sentence_hints, TRAINING_SUGGESTS, TRAINING_NAMES
+from okayenglish.utils import hide_word_letters, LANGUAGE_NAMES, get_sentence_hints, \
+    TRAINING_SUGGESTS, TRAINING_NAMES
 
 
 class Session:
@@ -73,8 +74,9 @@ class Session:
         text = training.check_answer(req_parser.text)
         if not training.should_continue_training:
             text += "Тренировка окончена."
-            self.save_stats(req_parser)
-            text += self.show_stats()
+            if not training.training_interrupt:
+                self.save_stats(req_parser)
+                text += self.show_stats()
             self._training_manager = None
             self.change_current_state(TRAINING_SELECT, resp_parser)
             text += "\nВыбирайте новую тренировку" + TRAININGS_TEXT
@@ -91,8 +93,9 @@ class Session:
         # значит тренировка окончена
         if not training.should_continue_training:
             text += "Тренировка окончена."
-            self.save_stats(req_parser)
-            text += self.show_stats()
+            if not training.training_interrupt:
+                self.save_stats(req_parser)
+                text += self.show_stats()
             self._training_manager = None
             # Состояние после
             # последнего отработанного слова - состояние выбора тренировки
@@ -114,8 +117,9 @@ class Session:
         # значит тренировка окончена
         if not training.should_continue_training:
             text += "Тренировка окончена."
-            self.save_stats(req_parser)
-            text += self.show_stats()
+            if not training.training_interrupt:
+                self.save_stats(req_parser)
+                text += self.show_stats()
 
             self._training_manager = None
             # Состояние после
@@ -142,7 +146,9 @@ class Session:
             training_count = len(stats)
             right_answers_percent = round(sum(tr.right_answers for tr in stats) / sum(
                 [tr.right_answers + tr.wrong_answers for tr in stats]) * 100, 2)
-            text += f"{TRAINING_NAMES[training]}: количество тренировок - {training_count}, процент правильных ответов - {right_answers_percent}%\n"
+            text += f"{TRAINING_NAMES[training]}: " \
+                f"количество тренировок - {training_count}, " \
+                f"процент правильных ответов - {right_answers_percent}%\n"
         self.change_current_state(TRAINING_SELECT, resp_parser)
         resp_parser.reply_text = text
 
@@ -160,7 +166,8 @@ class Session:
     def show_stats(self):
         text = "\nРезультат тренировки: "
         right_answers_percent = round(self._training_manager.get_stats()[0] /
-                                      (self._training_manager.get_stats()[0] + self._training_manager.get_stats()[1]) * 100, 2)
+                                      (self._training_manager.get_stats()[0] +
+                                       self._training_manager.get_stats()[1]) * 100, 2)
         text += f"процент правильных ответов: {right_answers_percent}%"
 
         return text

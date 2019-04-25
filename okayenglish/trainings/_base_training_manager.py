@@ -31,14 +31,14 @@ class TrainingManager(ABC):
         self._translated_so_far = 0
         self._wrong_answers = 0
 
-        self._training_interrupt = False
+        self.training_interrupt = False
 
         self.next_item()
 
     @property
     def should_continue_training(self):
         return self._translated_so_far < self.ITEMS_PER_TRAINING \
-               and not self._training_interrupt
+               and not self.training_interrupt
 
     @abstractmethod
     def check_input(self, inp, answer):
@@ -57,7 +57,7 @@ class TrainingManager(ABC):
         elif any(word in inp.lower() for word in ("хватит", "достаточно")):
             self._session._current_state = TRAINING_SELECT
             self._session._training_manager = None
-            self._training_interrupt = True
+            self.training_interrupt = True
             return random.choice(self._PHRASES["stop"])
         self._wrong_answers += 1
         return random.choice(self._PHRASES["wrong_answer"]) \
