@@ -9,5 +9,6 @@ class SentenceTrainingManager(TrainingManager):
         return checkable_sentence(inp) == checkable_sentence(self.answer)
 
     def next_item(self):
-        self.answer = get_random_sentence()
-        self.item_to_translate = translate_sentence(self.answer)
+        sentence = get_random_sentence()
+        self.answer = sentence[0]
+        self.item_to_translate = sentence[1]
