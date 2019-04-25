@@ -1,201 +1,100 @@
-He loves to play basketball.
-He goes to school.
-Does he go to school?
-She writes an e-mail to her best friend.
-He thinks he is very handsome.
-It usually rains every day here.
-It smells very delicious in the kitchen.
-We generally sing songs all together.
-We go to a gallery every Sunday.
-Does he write an email?
-The sun rises at the east.
-She goes to work by car.
-It doesn't rain here in the summer.
-We cook every day.
-We go to the gym club together.
-You have a big house.
-Do we know each other?
-They sleep in the afternoon.
-When do they usually talk to each other?
-The children are at home.
-The earth goes round the sun.
-George brushes his teeth twice a day.
-He gets up early every day.
-They speak English in USA.
-I like reading detective stories.
-I like geography and science.
-She doesn't study German on Monday.
-Does she live in Paris?
-He doesn't teach math.
-Cats hate water.
-Every child likes an icecream.
-My mother never lies.
-The Earth is spherical.
-She doesn't use a computer.
-It snows a lot in winter in Russia.
-We live in Texas.
-You go to holiday every summer.
-Do you like spaghetti?
-My daughter does the laundry.
-My brother takes out the trash.
-The course starts next Sunday.
-She swims every morning.
-I don't wash the dishes.
-We see them every week.
-I don't like tea.
-When does the train usually leave?
-She always forgets her purse.
-You don't have children.
-I and my sister don't see each other anymore.
-They don't go to school tomorrow.
-She wants to be a dentist.
-Cows eat grass.
-My cat runs very fast.
-She has a beehive full of bees.
-My son lives in London.
-They don't have any money.
-She plays basketball.
-He catches the train every morning.
-My sister works at the theater.
-Michael doesn't work.
-How often do you see George?
-She doesn't see Peter every day.
-My boyfriend loves this song.
-My father doesn't speak good English.
-He goes to football every day.
-California is not in the United Kingdom.
-The Queen of England lives in Buckingham Palace.
-Julie talks very fast.
-My brother's dog barks a lot.
-Does he play tennis?
-The train leaves every morning at 8 AM.
-Water freezes at 0°C.
-I love my new pets.
-We drink coffee every morning.
-My Dad never works on the weekends.
-She doesn't teach chemistry.
-I do love my new pets.
-Mary brushes her teeth twice a day.
-He drives to work.
-Mary enjoys cooking.
-She likes bananas.
-You don't listen to me.
-I run four miles every morning.
-They speak English at work.
-The train does not leave at 12 AM.
-I have no money at the moment.
-Do they talk a lot?
-Tomorrow early morning first I go to morning walk.
-Does she drink coffee?
-You run to the party.
-You have some schoolwork to do.
-Do you eat ice cream?
-The train leaves in ten minutes.
-Do pigs like milk?
-California is in America.
-Penguins live in the Antarctica.
-Nurses work in clinics and hospitals.
-Alex works for 7 hours every day.
-I do not like meat.
-They go to a gallery every Saturday.
------
-Она любит играть в баскетбол.
-Он ходит в школу.
-Он ходит в школу?
-Она пишет письмо её лучшему другу.
-Он думает, что он очень красивый.
-Здесь обычно идет дождь каждый день.
-На кухне очень вкусно пахнет.
-Мы обычно поём песни все вместе.
-Мы ходим в галлерею каждое воскресенье.
-Он пишет письмо?
-Солнце встаёт на востоке.
-Она ездит на работу на машине.
-Здесь не идет дождь летом.
-Мы готовим каждый день.
-Мы ходим в тренажерный клуб вместе.
-У тебя большой дом.
-Мы знаем друг друга?
-Они спят днем.
-Когда они обычно разговаривают друг с другом?
-Дети дома.
-Земля крутится вокруг солнца.
-Георгий чистит свои зубы дважды в день.
-Он просыпается очень рано.
-Они говорят на английском в США.
-Мне нравится читать детективные истории.
-Мне нравится география и наука.
-Она не изучает немецкий в понедельник.
-Он живет в Париже?
-Он не учит математику.
-Коты ненавидят воду.
-Все дети любят мороженое.
-Моя мама никогда не врет.
-Земля сферична.
-Она не пользуется компьютером.
-Зимой в России много снега.
-Мы живем в Техасе.
-Мы уходим на каникулы каждое лето.
-Тебе нравятся спагетти?
-Моя дочь стирает белье.
-Мой брат выбрасывает мусор.
-Курс начинается в следующее воскресенье.
-Она плавает каждое утро.
-Я не мою посуду.
-Вы видим их каждую неделю.
-Я не люблю чай.
-Когда обычно поезд уходит?
-Она всегда забывает свой кошелек.
-У меня нет детей.
-Я и моя сестра не видим друг друга больше.
-Они не идут в школу завтра.
-Она хочет быть дантистом.
-Коровы едят траву.
-Мой кот бегает очень быстро.
-У нее есть улей полный пчел.
-Мой сын живет в Лондоне.
-У меня нет денег.
-Она играет в баскетбол.
-Он ловит поезд каждое утро.
-Моя сестра работает в театре.
-Майкл не работает.
-Как часто ты видишь Георгия?
-Она не видит Питера каждый день.
-Мой парень любит эту песню.
-Мой папа не говорит хорошо на английском.
-Он ходит на футбол каждый день.
-Калифорния это не Объединенное Королевство.
-Королева Англии живет в Букингемском дворце.
-Джулия говорит очень быстро.
-Собака моего брата много лает.
-Он играет в теннис?
-Поезд уходит каждое утро в 8 часов.
-Вода замерзает при 0°C.
-Я люблю новых домашних животных.
-Мы пьем кофе каждое утро.
-Мой папа никогда не работает на выходных.
-Она не преподает химию.
-Я сильно люблю новых домашних животных.
-Мери чистит свои зубы дважды в день.
-Он ездит на работу.
-Мери нравится готовить.
-Она любит бананы.
-Ты меня не слушаешь.
-Я бегаю четыре мили каждое утро.
-Они разговаривают на английском на работе.
-Поезд не уходит в 12 часов.
-У меня нет денег на данный момент.
-Они много разговаривают?
-Завтра рано с утра сначала я пойду на утреннюю прогулку.
-Она пьет кофе?
-Ты бежишь на вечеринку.
-У тебя есть немного школьной работы поделать.
-Ты ешь мороженое?
-Поезд уходит через десять минут.
-Свиньи любят молоко?
-Калифорния в Америке.
-Пингвины живут в Антарктиде.
-Медсестры работают в клиниках и больницах.
-Алекс работает по 7 часов каждый день.
-Я не люблю мясо.
-Они ходят в галлерею каждую субботу.
+He loves to play basketball. | Он любит играть в баскетбол.
+He goes to school. | Он ходит в школу.
+Does he go to school? | Он ходит в школу?
+She writes an e-mail to her best friend. | Она пишет письмо её лучшему другу.
+He thinks he is very handsome. | Он думает, что он очень красивый.
+It usually rains every day here. | Здесь обычно идет дождь каждый день.
+It smells very delicious in the kitchen. | На кухне очень вкусно пахнет.
+We generally sing songs all together. | Мы обычно поём песни все вместе.
+We go to a gallery every Sunday. | Мы ходим в галлерею каждое воскресенье.
+Does he write an email? | Он пишет письмо?
+The sun rises at the east. | Солнце встаёт на востоке.
+She goes to work by car. | Она ездит на работу на машине.
+It doesn't rain here in the summer. | Здесь не идет дождь летом.
+We cook every day. | Мы готовим каждый день.
+We go to the gym club together. | Мы ходим в тренажерный клуб вместе.
+You have a big house. | У тебя большой дом.
+Do we know each other? | Мы знаем друг друга?
+They sleep in the afternoon. | Они спят днем.
+When do they usually talk to each other? | Когда они обычно разговаривают друг с другом?
+The children are at home. | Дети дома.
+The earth goes round the sun. | Земля крутится вокруг солнца.
+George brushes his teeth twice a day. | Георгий чистит свои зубы дважды в день.
+He gets up early every day. | Он просыпается очень рано.
+They speak English in USA. | Они говорят на английском в США.
+I like reading detective stories. | Мне нравится читать детективные истории.
+I like geography and science. | Мне нравится география и наука.
+She doesn't study German on Monday. | Она не изучает немецкий в понедельник.
+Does she live in Paris? | Он живет в Париже?
+He doesn't teach math. | Он не учит математику.
+Cats hate water. | Коты ненавидят воду.
+Every child likes an icecream. | Все дети любят мороженое.
+My mother never lies. | Моя мама никогда не врет.
+The Earth is spherical. | Земля сферична.
+She doesn't use a computer. | Она не пользуется компьютером.
+It snows a lot in winter in Russia. | Зимой в России много снега.
+We live in Texas. | Мы живем в Техасе.
+You go to holiday every summer. | Мы уходим на каникулы каждое лето.
+Do you like spaghetti? | Тебе нравятся спагетти?
+My daughter does the laundry. | Моя дочь стирает белье.
+My brother takes out the trash. | Мой брат выбрасывает мусор.
+The course starts next Sunday. | Курс начинается в следующее воскресенье.
+She swims every morning. | Она плавает каждое утро.
+I don't wash the dishes. | Я не мою посуду.
+We see them every week. | Вы видим их каждую неделю.
+I don't like tea. | Я не люблю чай.
+When does the train usually leave? | Когда обычно поезд уходит?
+She always forgets her purse. | Она всегда забывает свой кошелек.
+You don't have children. | У меня нет детей.
+I and my sister don't see each other anymore. | Я и моя сестра не видим друг друга больше.
+They don't go to school tomorrow. | Они не идут в школу завтра.
+She wants to be a dentist. | Она хочет быть дантистом.
+Cows eat grass. | Коровы едят траву.
+My cat runs very fast. | Мой кот бегает очень быстро.
+She has a beehive full of bees. | У нее есть улей полный пчел.
+My son lives in London. | Мой сын живет в Лондоне.
+They don't have any money. | У меня нет денег.
+She plays basketball. | Она играет в баскетбол.
+He catches the train every morning. | Он ловит поезд каждое утро.
+My sister works at the theater. | Моя сестра работает в театре.
+Michael doesn't work. | Майкл не работает.
+How often do you see George? | Как часто ты видишь Георгия?
+She doesn't see Peter every day. | Она не видит Питера каждый день.
+My boyfriend loves this song. | Мой парень любит эту песню.
+My father doesn't speak good English. | Мой папа не говорит хорошо на английском.
+He goes to football every day. | Он ходит на футбол каждый день.
+California is not in the United Kingdom. | Калифорния это не Объединенное Королевство.
+The Queen of England lives in Buckingham Palace. | Королева Англии живет в Букингемском дворце.
+Julie talks very fast. | Джулия говорит очень быстро.
+My brother's dog barks a lot. | Собака моего брата много лает.
+Does he play tennis? | Он играет в теннис?
+The train leaves every morning at 8 AM. | Поезд уходит каждое утро в 8 часов.
+Water freezes at 0°C. | Вода замерзает при 0°C.
+I love my new pets. | Я люблю новых домашних животных.
+We drink coffee every morning. | Мы пьем кофе каждое утро.
+My Dad never works on the weekends. | Мой папа никогда не работает на выходных.
+She doesn't teach chemistry. | Она не преподает химию.
+I do love my new pets. | Я сильно люблю новых домашних животных.
+Mary brushes her teeth twice a day. | Мери чистит свои зубы дважды в день.
+He drives to work. | Он ездит на работу.
+Mary enjoys cooking. | Мери нравится готовить.
+She likes bananas. | Она любит бананы.
+You don't listen to me. | Ты меня не слушаешь.
+I run four miles every morning. | Я бегаю четыре мили каждое утро.
+They speak English at work. | Они разговаривают на английском на работе.
+The train does not leave at 12 AM. | Поезд не уходит в 12 часов.
+I have no money at the moment. | У меня нет денег на данный момент.
+Do they talk a lot? | Они много разговаривают?
+Tomorrow early morning first I go to morning walk. | Завтра рано с утра сначала я пойду на утреннюю прогулку.
+Does she drink coffee? | Она пьет кофе?
+You run to the party. | Ты бежишь на вечеринку.
+You have some schoolwork to do. | У тебя есть немного школьной работы поделать.
+Do you eat ice cream? | Ты ешь мороженое?
+The train leaves in ten minutes. | Поезд уходит через десять минут.
+Do pigs like milk? | Свиньи любят молоко?
+California is in America. | Калифорния в Америке.
+Penguins live in the Antarctica. | Пингвины живут в Антарктиде.
+Nurses work in clinics and hospitals. | Медсестры работают в клиниках и больницах.
+Alex works for 7 hours every day. | Алекс работает по 7 часов каждый день.
+I do not like meat. | Я не люблю мясо.
+They go to a gallery every Saturday. | Они ходят в галлерею каждую субботу.
