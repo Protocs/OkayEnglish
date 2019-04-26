@@ -10,21 +10,17 @@ from okayenglish.states import WORD_TRAINING, PHRASAL_VERBS_TRAINING, SENTENCE_T
 TRANSLATE_API_SERVER = "https://translate.yandex.net/api/v1.5/tr.json/translate"
 DICTIONARY_API_SERVER = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup"
 
-LANGUAGE_NAMES = {
-    "ru": "русский язык",
-    "en": "английский язык"
-}
+LANGUAGE_NAMES = {"ru": "русский язык", "en": "английский язык"}
 
 TRAINING_NAMES = {
     WORD_TRAINING: "Перевод слов",
     PHRASAL_VERBS_TRAINING: "Перевод фразовых глаголов",
-    SENTENCE_TRAINING: "Перевод предложений"
+    SENTENCE_TRAINING: "Перевод предложений",
 }
 
 TRAINING_SUGGESTS = [
-                        {'title': TRAINING_NAMES[training], 'hide': True}
-                        for training in TRAINING_NAMES
-                    ] + [{'title': "Статистика", 'hide': True}]
+    {"title": TRAINING_NAMES[training], "hide": True} for training in TRAINING_NAMES
+] + [{"title": "Статистика", "hide": True}]
 
 
 def get_random_russian_word():
@@ -41,13 +37,13 @@ def get_random_english_word():
 
 def get_random_sentence():
     with open("okayenglish/static/sentences.txt", encoding="utf-8") as f:
-        sentence = random.choice(f.readlines()).split('|')
+        sentence = random.choice(f.readlines()).split("|")
         return sentence[0].strip(), sentence[1].strip()
 
 
 def get_random_phrasal_verb():
     with open("okayenglish/static/phrasal_verbs.txt", encoding="utf-8") as f:
-        phrases = random.choice(f.readlines()).split('|')
+        phrases = random.choice(f.readlines()).split("|")
         return phrases[0].strip(), phrases[1].strip()
 
 
@@ -55,7 +51,7 @@ def translate_word(word, from_lang, to_lang):
     params = {
         "key": DICTIONARY_API_KEY,
         "text": word,
-        "lang": from_lang + "-" + to_lang
+        "lang": from_lang + "-" + to_lang,
     }
     response = requests.get(DICTIONARY_API_SERVER, params).content
     try:
@@ -65,11 +61,7 @@ def translate_word(word, from_lang, to_lang):
 
 
 def translate_sentence(sentence):
-    params = {
-        "key": TRANSLATE_API_KEY,
-        "text": sentence,
-        "lang": "en-ru"
-    }
+    params = {"key": TRANSLATE_API_KEY, "text": sentence, "lang": "en-ru"}
     response = requests.get(TRANSLATE_API_SERVER, params)
     try:
         return response.json()["text"][0]

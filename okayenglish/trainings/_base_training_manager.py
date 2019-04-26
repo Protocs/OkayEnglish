@@ -6,21 +6,23 @@ from okayenglish.states import TRAINING_SELECT
 
 class TrainingManager(ABC):
     _PHRASES = {
-        "right_answer": ["Это правильный ответ.",
-                         "В точку!",
-                         "Да, правильно.",
-                         "Верно!",
-                         "Абсолютно правильно!", ],
-        "wrong_answer": ["Это неправильный ответ.",
-                         "Нет, неправильно.",
-                         "Увы, но нет.",
-                         "К сожалению, это неправильно.",
-                         "Неверно."],
+        "right_answer": [
+            "Это правильный ответ.",
+            "В точку!",
+            "Да, правильно.",
+            "Верно!",
+            "Абсолютно правильно!",
+        ],
+        "wrong_answer": [
+            "Это неправильный ответ.",
+            "Нет, неправильно.",
+            "Увы, но нет.",
+            "К сожалению, это неправильно.",
+            "Неверно.",
+        ],
         "if_idk": "Если не знаете перевода, просто скажите «не знаю».\n",
         "idk_answer": "Ничего страшного.\nПравильный ответ - {}\n",
-        "stop": ["Хорошо, хватит так хватит. ",
-                 "Как скажете. ",
-                 "Так и быть. "]
+        "stop": ["Хорошо, хватит так хватит. ", "Как скажете. ", "Так и быть. "],
     }
     ITEMS_PER_TRAINING = 5
 
@@ -37,8 +39,10 @@ class TrainingManager(ABC):
 
     @property
     def should_continue_training(self):
-        return self._translated_so_far < self.ITEMS_PER_TRAINING \
-               and not self.training_interrupt
+        return (
+            self._translated_so_far < self.ITEMS_PER_TRAINING
+            and not self.training_interrupt
+        )
 
     @abstractmethod
     def check_input(self, inp, answer):
@@ -60,8 +64,11 @@ class TrainingManager(ABC):
             self.training_interrupt = True
             return random.choice(self._PHRASES["stop"])
         self._wrong_answers += 1
-        return random.choice(self._PHRASES["wrong_answer"]) \
-               + "\n" + self._PHRASES["if_idk"]
+        return (
+            random.choice(self._PHRASES["wrong_answer"])
+            + "\n"
+            + self._PHRASES["if_idk"]
+        )
 
     @abstractmethod
     def next_item(self):

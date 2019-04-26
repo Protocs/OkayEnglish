@@ -1,8 +1,7 @@
 import random
 
 from okayenglish.trainings._base_training_manager import TrainingManager
-from okayenglish.utils import translate_word, Word, \
-    get_random_russian_word
+from okayenglish.utils import translate_word, Word, get_random_russian_word
 
 
 class WordTrainingManager(TrainingManager):
