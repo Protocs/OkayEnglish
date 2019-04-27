@@ -3,7 +3,7 @@ import random
 import requests
 import re
 
-from okayenglish.local_settings import DICTIONARY_API_KEY, TRANSLATE_API_KEY
+from okayenglish.local_settings import DICTIONARY_API_KEY
 from okayenglish.texts import TRAININGS
 from okayenglish.states import WORD_TRAINING, PHRASAL_VERBS_TRAINING, SENTENCE_TRAINING
 
