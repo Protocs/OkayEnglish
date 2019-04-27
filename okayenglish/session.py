@@ -137,7 +137,7 @@ class Session:
             self.change_current_state(TRAINING_SELECT, resp_parser)
             text += "\nВыбирайте новую тренировку" + TRAININGS_TEXT
         else:
-            hints = get_sentence_hints(training.answer, training.tip)
+            hints = get_sentence_hints(training.answer, not training.tip)
             text += (
                 f'Переведите предложение "{training.item_to_translate.strip()}" '
                 f"на английский\n"
