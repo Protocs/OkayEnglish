@@ -1,10 +1,22 @@
 import random
 
 from okayenglish.trainings._base_training_manager import TrainingManager
-from okayenglish.utils import translate_word, Word, get_random_russian_word
+from okayenglish.utils import (
+    translate_word,
+    Word,
+    get_random_russian_word,
+    get_tip_letters,
+)
 
 
 class WordTrainingManager(TrainingManager):
+    @property
+    def symbols_to_hide(self):
+        tip_letters = 0
+        if self.tip:
+            tip_letters = get_tip_letters(len(self.answer.word))
+        return len(self.answer.word) // 2 + 1 - tip_letters
+
     def check_input(self, inp, answer):
         return inp.lower().strip() == answer.word.lower()
 

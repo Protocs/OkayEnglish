@@ -6,6 +6,7 @@ from okayenglish.texts import GREETING as GREETING_TEXT, TRAININGS as TRAININGS_
 from okayenglish.trainings.word_training import WordTrainingManager
 from okayenglish.trainings.sentence_training import SentenceTrainingManager
 from okayenglish.trainings.phrasal_verbs_training import PhrasalVerbsTrainingManager
+from okayenglish.trainings._base_training_manager import TrainingManager
 from okayenglish.utils import (
     hide_word_letters,
     LANGUAGE_NAMES,
@@ -86,7 +87,9 @@ class Session:
             self.change_current_state(TRAINING_SELECT, resp_parser)
             text += "\nВыбирайте новую тренировку" + TRAININGS_TEXT
         else:
-            phrase_with_hidden_letters = hide_word_letters(training.answer)
+            phrase_with_hidden_letters = hide_word_letters(
+                training.answer, training.symbols_to_hide
+            )
             text += f"Переведите фразу «{training.item_to_translate}» на русский язык\n"
             text += f"Подсказка: {phrase_with_hidden_letters}\n"
         resp_parser.reply_text = text
@@ -107,7 +110,9 @@ class Session:
             self.change_current_state(TRAINING_SELECT, resp_parser)
             text += "\nВыбирайте новую тренировку" + TRAININGS_TEXT
         else:
-            word_with_hidden_letters = hide_word_letters(training.answer.word)
+            word_with_hidden_letters = hide_word_letters(
+                training.answer.word, training.symbols_to_hide
+            )
             text += (
                 f"Переведите слово «{training.item_to_translate.word}» "
                 f"на {LANGUAGE_NAMES[training.answer.language]}\n"
@@ -132,7 +137,7 @@ class Session:
             self.change_current_state(TRAINING_SELECT, resp_parser)
             text += "\nВыбирайте новую тренировку" + TRAININGS_TEXT
         else:
-            hints = get_sentence_hints(training.answer)
+            hints = get_sentence_hints(training.answer, training.tip)
             text += (
                 f'Переведите предложение "{training.item_to_translate.strip()}" '
                 f"на английский\n"
@@ -179,15 +184,10 @@ class Session:
         db.session.commit()
 
     def show_stats(self):
+        stats = self._training_manager.get_stats()
         text = "\nРезультат тренировки: "
         right_answers_percent = round(
-            self._training_manager.get_stats()[0]
-            / (
-                self._training_manager.get_stats()[0]
-                + self._training_manager.get_stats()[1]
-            )
-            * 100,
-            2,
+            stats[0] / (TrainingManager.ITEMS_PER_TRAINING + stats[1]) * 100, 2
         )
         text += f"процент правильных ответов: {right_answers_percent}%"
 
@@ -197,7 +197,11 @@ class Session:
         resp_parser["response"]["buttons"] = []
         if new_state == TRAINING_SELECT:
             resp_parser["response"]["buttons"] = TRAINING_SUGGESTS
-        elif "training" in new_state:
-            resp_parser["response"]["buttons"] = [{"title": "Не знаю", "hide": True}, {"title": "Подсказка", "hide": True}, {"title": "Хватит", "hide": True}]
+        elif new_state.endswith("training"):
+            resp_parser["response"]["buttons"] = [
+                {"title": "Подсказка", "hide": True},
+                {"title": "Не знаю", "hide": True},
+                {"title": "Хватит", "hide": True},
+            ]
 
         self._current_state = new_state

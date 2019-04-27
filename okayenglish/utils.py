@@ -60,22 +60,23 @@ def translate_word(word, from_lang, to_lang):
         return False
 
 
-def translate_sentence(sentence):
-    params = {"key": TRANSLATE_API_KEY, "text": sentence, "lang": "en-ru"}
-    response = requests.get(TRANSLATE_API_SERVER, params)
-    try:
-        return response.json()["text"][0]
-    except IndexError:
-        return False
-
-
 def checkable_sentence(sentence):
     return re.sub(r"[.?]", "", sentence.lower().strip())
 
 
-def hide_word_letters(word):
+def get_tip_letters(word_length):
+    if word_length <= 6:
+        tip_letters = 1
+    elif 6 < word_length <= 12:
+        tip_letters = 2
+    else:
+        tip_letters = 3
+    return tip_letters
+
+
+def hide_word_letters(word, to_hide=None):
     letters = list(word.replace(" ", "_"))
-    for _ in range(len(word) // 2 + 1):
+    for _ in range(len(word) // 2 + 1 if to_hide is None else to_hide):
         random_index = random.randint(0, len(word) - 1)
         while letters[random_index] in ("*", "_"):
             random_index = random.randint(0, len(word) - 1)
@@ -83,10 +84,11 @@ def hide_word_letters(word):
     return " ".join(letters)
 
 
-def get_sentence_hints(translated_sentence):
+def get_sentence_hints(translated_sentence, duds=True):
     hints = checkable_sentence(translated_sentence).split()
-    duds_to_add = len(hints)
-    hints += [get_random_english_word() for _ in range(duds_to_add)]
+    if duds:
+        duds_to_add = len(hints)
+        hints += [get_random_english_word() for _ in range(duds_to_add)]
     random.shuffle(hints)
     return hints
 

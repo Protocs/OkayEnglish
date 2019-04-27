@@ -1,10 +1,6 @@
 from okayenglish.trainings._base_training_manager import TrainingManager
 
-from okayenglish.utils import (
-    checkable_sentence,
-    get_random_sentence,
-    translate_sentence,
-)
+from okayenglish.utils import checkable_sentence, get_random_sentence
 
 
 class SentenceTrainingManager(TrainingManager):
