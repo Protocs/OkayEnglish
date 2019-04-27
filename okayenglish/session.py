@@ -197,4 +197,7 @@ class Session:
         resp_parser["response"]["buttons"] = []
         if new_state == TRAINING_SELECT:
             resp_parser["response"]["buttons"] = TRAINING_SUGGESTS
+        elif "training" in new_state:
+            resp_parser["response"]["buttons"] = [{"title": "Не знаю", "hide": True}, {"title": "Подсказка", "hide": True}, {"title": "Хватит", "hide": True}]
+
         self._current_state = new_state
