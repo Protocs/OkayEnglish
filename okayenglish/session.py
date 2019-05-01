@@ -1,8 +1,12 @@
-import logging
 import re
 
 from okayenglish.states import *
-from okayenglish.texts import GREETING as GREETING_TEXT, TRAININGS as TRAININGS_TEXT
+from okayenglish.texts import (
+    GREETING as GREETING_TEXT,
+    TRAININGS as TRAININGS_TEXT,
+    MAIN_MENU_HELP,
+    UNKNOWN_REQUEST,
+)
 from okayenglish.trainings.word_training import WordTrainingManager
 from okayenglish.trainings.sentence_training import SentenceTrainingManager
 from okayenglish.trainings.phrasal_verbs_training import PhrasalVerbsTrainingManager
@@ -36,14 +40,18 @@ class Session:
             self.handle_phrasal_verb_training_question(req_parser, resp_parser)
 
     def select_training(self, req_parser, resp_parser):
-        if re.findall("1|слов", req_parser.text, re.IGNORECASE):
+        if re.findall("помощь|что ты умеешь", req_parser.text, re.IGNORECASE):
+            resp_parser.reply_text = MAIN_MENU_HELP
+        elif re.findall("1|слов", req_parser.text, re.IGNORECASE):
             self.begin_word_training(resp_parser)
-        if re.findall("2|предложени", req_parser.text, re.IGNORECASE):
+        elif re.findall("2|предложени", req_parser.text, re.IGNORECASE):
             self.begin_sentence_training(resp_parser)
-        if re.findall("3|фраз", req_parser.text, re.IGNORECASE):
+        elif re.findall("3|фраз", req_parser.text, re.IGNORECASE):
             self.begin_phrasal_verbs_training(resp_parser)
-        if re.findall("статистика", req_parser.text, re.IGNORECASE):
+        elif re.findall("статистика", req_parser.text, re.IGNORECASE):
             self.handle_stats(req_parser, resp_parser)
+        else:
+            resp_parser.reply_text = UNKNOWN_REQUEST
 
     def begin_word_training(self, resp_parser):
         self.change_current_state(WORD_TRAINING, resp_parser)

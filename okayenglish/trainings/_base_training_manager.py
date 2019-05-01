@@ -1,7 +1,10 @@
 import random
 
 from abc import ABC, abstractmethod
+
 from okayenglish.states import TRAINING_SELECT
+from okayenglish.texts import TRAINING_HELP
+from okayenglish.utils import TRAINING_NAMES
 
 
 class TrainingManager(ABC):
@@ -78,6 +81,10 @@ class TrainingManager(ABC):
             self.tip = True
             self.tips += 1
             return self._PHRASES["tip"]
+        elif any(word in inp.lower() for word in ("помощь", "что ты умеешь")):
+            return TRAINING_HELP.format(
+                training_name=TRAINING_NAMES[self._session._current_state]
+            )
         self._wrong_answers += 1
         return (
             random.choice(self._PHRASES["wrong_answer"])
