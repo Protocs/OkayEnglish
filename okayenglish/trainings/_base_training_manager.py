@@ -97,4 +97,5 @@ class TrainingManager(ABC):
         pass
 
     def get_stats(self):
-        return self._translated_so_far - self.tips / 2, self._wrong_answers
+        return self._translated_so_far - self.tips / 2, self._wrong_answers, \
+               self.tips

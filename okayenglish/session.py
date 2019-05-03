@@ -185,7 +185,7 @@ class Session:
             TrainingStats(
                 user_id=req_parser.user_id,
                 right_answers=stats[0],
-                wrong_answers=stats[1],
+                wrong_answers=stats[1] + stats[2] / 2,
                 training_type=self._current_state,
             )
         )
