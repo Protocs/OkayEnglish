@@ -17,6 +17,7 @@ from okayenglish.utils import (
     get_sentence_hints,
     TRAINING_SUGGESTS,
     TRAINING_NAMES,
+TRAINING_PROCESS_SUGGESTS,
 )
 
 
@@ -100,6 +101,8 @@ class Session:
             )
             text += f"Переведите фразу «{training.item_to_translate}» на русский язык\n"
             text += f"Подсказка: {phrase_with_hidden_letters}\n"
+            resp_parser.buttons = TRAINING_PROCESS_SUGGESTS
+
         resp_parser.reply_text = text
 
     def handle_word_training_question(self, req_parser, resp_parser):
@@ -126,6 +129,8 @@ class Session:
                 f"на {LANGUAGE_NAMES[training.answer.language]}\n"
             )
             text += f"Подсказка: {word_with_hidden_letters}\n"
+            resp_parser.buttons = TRAINING_PROCESS_SUGGESTS
+
         resp_parser.reply_text = text
 
     def handle_sentence_training_question(self, req_parser, resp_parser):
@@ -151,6 +156,8 @@ class Session:
                 f"на английский\n"
             )
             text += f"Подсказки: {', '.join(hints)}\n"
+            resp_parser.buttons = TRAINING_PROCESS_SUGGESTS
+
         resp_parser.reply_text = text
 
     def handle_stats(self, req_parser, resp_parser):
@@ -202,14 +209,10 @@ class Session:
         return text
 
     def change_current_state(self, new_state, resp_parser):
-        resp_parser["response"]["buttons"] = []
+        resp_parser.buttons = []
         if new_state == TRAINING_SELECT:
-            resp_parser["response"]["buttons"] = TRAINING_SUGGESTS
+            resp_parser.buttons = TRAINING_SUGGESTS
         elif new_state.endswith("training"):
-            resp_parser["response"]["buttons"] = [
-                {"title": "Подсказка", "hide": True},
-                {"title": "Не знаю", "hide": True},
-                {"title": "Хватит", "hide": True},
-            ]
+            resp_parser.buttons = TRAINING_PROCESS_SUGGESTS
 
         self._current_state = new_state

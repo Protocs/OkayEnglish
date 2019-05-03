@@ -22,6 +22,11 @@ TRAINING_SUGGESTS = [
     {"title": TRAINING_NAMES[training], "hide": True} for training in TRAINING_NAMES
 ] + [{"title": "Статистика", "hide": True}]
 
+TRAINING_PROCESS_SUGGESTS = [
+                {"title": "Подсказка", "hide": True},
+                {"title": "Не знаю", "hide": True},
+                {"title": "Хватит", "hide": True},
+            ]
 
 def get_random_russian_word():
     with open("okayenglish/static/russian_words.txt", encoding="utf-8") as file:

@@ -57,3 +57,11 @@ class ResponseParser(dict):
     @end_session.setter
     def end_session(self, end):
         self["response"]["end_session"] = end
+
+    @property
+    def buttons(self):
+        return self["response"]["buttons"]
+
+    @buttons.setter
+    def buttons(self, new_buttons):
+        self["response"]["buttons"] = new_buttons
