@@ -17,7 +17,7 @@ from okayenglish.utils import (
     get_sentence_hints,
     TRAINING_SUGGESTS,
     TRAINING_NAMES,
-TRAINING_PROCESS_SUGGESTS,
+    TRAINING_PROCESS_SUGGESTS,
 )
 
 
