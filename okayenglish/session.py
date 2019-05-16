@@ -43,13 +43,13 @@ class Session:
     def select_training(self, req_parser, resp_parser):
         if re.findall("помощь|что ты умеешь", req_parser.text, re.IGNORECASE):
             resp_parser.reply_text = MAIN_MENU_HELP
-        elif re.findall("1|слов", req_parser.text, re.IGNORECASE):
+        elif re.findall("1|слов|один", req_parser.text, re.IGNORECASE):
             self.begin_word_training(resp_parser)
-        elif re.findall("2|предложени", req_parser.text, re.IGNORECASE):
+        elif re.findall("2|предложени|два", req_parser.text, re.IGNORECASE):
             self.begin_sentence_training(resp_parser)
-        elif re.findall("3|фраз", req_parser.text, re.IGNORECASE):
+        elif re.findall("3|фраз|три", req_parser.text, re.IGNORECASE):
             self.begin_phrasal_verbs_training(resp_parser)
-        elif re.findall("статистика", req_parser.text, re.IGNORECASE):
+        elif re.findall("статистик", req_parser.text, re.IGNORECASE):
             self.handle_stats(req_parser, resp_parser)
         else:
             resp_parser.reply_text = UNKNOWN_REQUEST
