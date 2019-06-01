@@ -80,7 +80,7 @@ class Session:
         self.change_current_state(PHRASAL_VERBS_TRAINING, resp_parser)
         training = self._training_manager = PhrasalVerbsTrainingManager(self)
         phrase_with_hidden_letters = hide_word_letters(training.answer)
-        text = f"Переведите фразу «{training.item_to_translate}» на русский язык\n"
+        text = f"Переведите фразу «{training.item_to_translate}» на английский язык\n"
         text += f"Подсказка: {phrase_with_hidden_letters}\n"
         resp_parser.reply_text = text
 
